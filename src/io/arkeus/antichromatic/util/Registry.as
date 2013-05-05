@@ -15,6 +15,8 @@ package io.arkeus.antichromatic.util {
 		public static var player:Player;
 		public static var map:BitmapData;
 		
+		public static var difficulty:uint = Difficulty.NORMAL;
+		
 		public static var items:Vector.<uint>;
 		public static var flags:Vector.<uint>;
 		

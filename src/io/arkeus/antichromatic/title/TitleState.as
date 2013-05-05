@@ -4,6 +4,7 @@ package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.world.Tile;
+	import io.arkeus.antichromatic.pause.PauseState;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
@@ -71,7 +72,8 @@ package io.arkeus.antichromatic.title {
 				return;
 			}
 			// push state with difficulty selection
-			continueGame(false, true);
+			Ax.pushState(new NewGameState);
+			//continueGame(false, true);
 			complete = true;
 		}
 		
@@ -138,6 +140,9 @@ package io.arkeus.antichromatic.title {
 		
 		override public function onResume(sourceState:Class):void {
 			buttons.visible = true;
+			if (sourceState != PauseState) {
+				complete = false;
+			}
 		}
 	}
 }
