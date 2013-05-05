@@ -41,6 +41,8 @@ package io.arkeus.antichromatic.game.entity {
 		private var loaded:Boolean = false;
 		public var justSwapped:Boolean = false;
 		
+		private var initializationFunction:Function;
+		
 		public function Player(x:Number, y:Number, tp:TransitionProperties) {
 			super(x, y, Resource.PLAYER_BLACK, FRAME_WIDTH, FRAME_HEIGHT);
 			
@@ -57,32 +59,44 @@ package io.arkeus.antichromatic.game.entity {
 			
 			hue = World.INITIAL_COLOR;
 			gun = new Gun(this.x, this.y);
+			facing = tp == null ? RIGHT : tp.facing;
+			trace("beforefacing", facing, tp);
 			
 			if (tp != null) {
 				velocity.x = tp.velocity.x;
 				velocity.y = tp.velocity.y;
 				//previous.x = this.x + tp.velocity.x * -Ax.dt;
 				//previous.y = this.y + tp.velocity.y * -Ax.dt;
-				toggleColor(false, tp.hue);
+				initializationFunction = function():void {
+					toggleColor(false, tp.hue);
+				};
 			}
+			
+			stationary = true;
 		}
 		
 		override public function update():void {
-			if (!loaded) {
-				Ax.dt = 0;
+			if (initializationFunction != null) {
+				initializationFunction();
+				initializationFunction = null;
 			}
 			
-			if (!frozen && loaded) {
+			if (!frozen && loaded && !Registry.game.frozen) {
 				handleInput();
 				handleFacing();
 				handleShooting();
 				handleTeleport();
+			} else {
+				stationary = true;
 			}
 			
 			super.update();
 			gun.update();
 			
-			loaded = true;
+			if (Ax.camera.sprite.alpha == 0) {
+				loaded = true;
+				stationary = false;
+			}
 		}
 		
 		override public function draw():void {
@@ -98,6 +112,11 @@ package io.arkeus.antichromatic.game.entity {
 				clutching -= Ax.dt;
 			}
 			wallJumping -= Ax.dt;
+			
+			if (Config.CLICK_TO_MOVE && Ax.keys.pressed(AxKey.SHIFT)) {
+				x = previous.x = Ax.mouse.x - width / 2;
+				y = previous.y = Ax.mouse.y - height / 2;
+			}
 			
 			justSwapped = false;
 			if (Ax.keys.pressed(AxKey.SPACE)) {
@@ -273,13 +292,13 @@ package io.arkeus.antichromatic.game.entity {
 		
 		private function handleTeleport():void {
 			if (x > Registry.game.world.width - width / 2) {
-				Registry.game.teleport(Registry.game.world.width, y, 2, 0, new TransitionProperties(velocity, hue));
+				Registry.game.teleport(Registry.game.world.width, y, 2, 0, new TransitionProperties(velocity, hue, facing));
 			} else if (x < -width / 2) {
-				Registry.game.teleport(-width, y, -2, 0, new TransitionProperties(velocity, hue));
+				Registry.game.teleport(-width, y, -2, 0, new TransitionProperties(velocity, hue, facing));
 			} else if (y > Registry.game.world.height - height / 2) {
-				Registry.game.teleport(x, Registry.game.world.height, 0, 2, new TransitionProperties(velocity, hue));
+				Registry.game.teleport(x, Registry.game.world.height, 0, 2, new TransitionProperties(velocity, hue, facing));
 			} else if (y < -height / 2) {
-				Registry.game.teleport(x, -height, 0, -2, new TransitionProperties(velocity, hue, true));
+				Registry.game.teleport(x, -height, 0, -2, new TransitionProperties(velocity, hue, facing, true));
 			}
 			
 			if ((touching & DOWN) && Registry.game.transitionProperties != null && Registry.game.transitionProperties.upwards && !Registry.game.transitionProperties.adjustedUpwards) {

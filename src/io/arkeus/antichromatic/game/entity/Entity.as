@@ -1,9 +1,7 @@
 package io.arkeus.antichromatic.game.entity {
-	import io.arkeus.antichromatic.assets.Particle;
 	import io.arkeus.antichromatic.assets.Sound;
 	
 	import org.axgl.AxSprite;
-	import org.axgl.particle.AxParticleSystem;
 
 	public class Entity extends AxSprite {
 		public static const BLACK:uint = 0;

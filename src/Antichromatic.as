@@ -1,5 +1,5 @@
 package {
-	import io.arkeus.antichromatic.title.TitleState;
+	import io.arkeus.antichromatic.title.InitializationState;
 	
 	import org.axgl.Ax;
 	
@@ -7,7 +7,7 @@ package {
 
 	public class Antichromatic extends Ax {
 		public function Antichromatic() {
-			super(TitleState, 720, 600, 2, 60, true);
+			super(InitializationState, 720, 600, 2, 60, true);
 		}
 		
 		override public function create():void {

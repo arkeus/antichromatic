@@ -40,7 +40,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 				AxParticleSystem.emit(Particle.EXPLOSION, center.x, center.y);
 				destroy();
 				Sound.play("collect");
-				AxMessage.show(Item.MESSAGES[itemId], Config.MESSAGE_OPTIONS);
+				//AxMessage.show(Item.MESSAGES[itemId], Config.MESSAGE_OPTIONS);
 			}
 			
 			item.update();

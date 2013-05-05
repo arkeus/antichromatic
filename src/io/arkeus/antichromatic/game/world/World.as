@@ -37,6 +37,9 @@ package io.arkeus.antichromatic.game.world {
 		}
 
 		private function swapBackgroundTile(count:uint):void {
+			if (Registry.quality == 0) {
+				return;
+			}
 			for (var i:uint = 0; i < count; i++) {
 				var tx:uint = AxU.rand(0, cols - 1), ty:uint = AxU.rand(0, rows - 1);
 				var tile:AxTile = getTileAt(tx, ty);
@@ -114,10 +117,10 @@ package io.arkeus.antichromatic.game.world {
 			getTile(32).oneWay = true;
 			getTile(33).oneWay = true;
 			getTile(34).oneWay = true;
-		}
+		} 
 
-		private static const MAP_UNKNOWN_COLOR:uint = 0x282828;
-		private static const MAP_KNOWN_COLOR:uint = 0xaeaeae;
+		public static const MAP_UNKNOWN_COLOR:uint = 0x282828;
+		public static const MAP_KNOWN_COLOR:uint = 0xaeaeae;
 		public function updateMap():void {
 			var mx:uint = room.x / 30 * 9 + 1;
 			var my:uint = room.y / 25 * 9 + 1;
@@ -128,6 +131,7 @@ package io.arkeus.antichromatic.game.world {
 					Registry.map.setPixel(x, y, MAP_KNOWN_COLOR);
 				}
 			}
+			Registry.mapData[mx + "_" + my] = [mw, mh];
 		}
 	}
 }

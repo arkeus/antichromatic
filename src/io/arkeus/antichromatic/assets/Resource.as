@@ -41,6 +41,7 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/particle/green.png")] public static const PARTICLE_GREEN:Class;
 		[Embed(source = "/particle/blue.png")] public static const PARTICLE_BLUE:Class;
 		[Embed(source = "/particle/rainbow.png")] public static const PARTICLE_RAINBOW:Class;
+		[Embed(source = "/particle/tile.png")] public static const PARTICLE_TILE:Class;
 		
 		// Items
 		[Embed(source = "/entity/container.png")] public static const CONTAINER:Class;
@@ -48,11 +49,15 @@ package io.arkeus.antichromatic.assets {
 		
 		[Embed(source = "/misc/message_box.png")] public static const MESSAGE_BOX:Class;
 		[Embed(source = "/misc/noise.png")] public static const NOISE:Class;
-		[Embed(source = "/misc/title.png")] public static const TITLE:Class;
-		[Embed(source = "/misc/title_key.png")] public static const TITLE_KEY:Class;
 		[Embed(source = "/misc/pause.png")] public static const PAUSE:Class;
 		[Embed(source = "/misc/texts.png")] public static const TEXTS:Class;
 		[Embed(source = "/misc/map.png")] public static const MAP:Class;
 		[Embed(source = "/misc/map_target.png")] public static const MAP_TARGET:Class;
+		[Embed(source = "/misc/button.png")] public static const BUTTON:Class;
+		
+		[Embed(source = "/misc/title_background.png")] public static const TITLE_BACKGROUND:Class;
+		[Embed(source = "/misc/title_foreground.png")] public static const TITLE_FOREGROUND:Class;
+		[Embed(source = "/misc/title_logo.png")] public static const TITLE_LOGO:Class;
+		[Embed(source = "/misc/title_logo_color.png")] public static const TITLE_LOGO_COLOR:Class;
 	}
 }

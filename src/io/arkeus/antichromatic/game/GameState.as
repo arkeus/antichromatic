@@ -7,9 +7,9 @@ package io.arkeus.antichromatic.game {
 	import io.arkeus.antichromatic.game.world.Tile;
 	import io.arkeus.antichromatic.game.world.World;
 	import io.arkeus.antichromatic.game.world.WorldBuilder;
+	import io.arkeus.antichromatic.game.world.text.WallTextBuilder;
 	import io.arkeus.antichromatic.pause.PauseState;
 	import io.arkeus.antichromatic.util.Config;
-	import io.arkeus.antichromatic.util.Flag;
 	import io.arkeus.antichromatic.util.HUD;
 	import io.arkeus.antichromatic.util.Registry;
 	import io.arkeus.antichromatic.util.TransitionProperties;
@@ -45,12 +45,13 @@ package io.arkeus.antichromatic.game {
 		
 		public var frozen:Boolean = false;
 		
-		public function GameState(initialX:Number = -1, initialY:Number = -1, roomOffsetX:int = 0, roomOffsetY:int = 0, transitionProperties:TransitionProperties = null) {
-			this.initialX = initialX;
-			this.initialY = initialY;
-			this.roomOffsetX = roomOffsetX;
-			this.roomOffsetY = roomOffsetY;
-			this.transitionProperties = transitionProperties;
+		public function GameState() {
+			trace("new gamestate", Registry.initialX, Registry.initialY, Registry.roomOffsetX, Registry.roomOffsetY, "tp:", Registry.transitionProperties);
+			this.initialX = Registry.initialX;
+			this.initialY = Registry.initialY;
+			this.roomOffsetX = Registry.roomOffsetX;
+			this.roomOffsetY = Registry.roomOffsetY;
+			this.transitionProperties = Registry.transitionProperties;
 			Registry.playMusic(GameplayMusic);
 		}
 
@@ -68,12 +69,18 @@ package io.arkeus.antichromatic.game {
 				return;
 			}
 			this.add(world);
+			
+			var wallText:AxGroup = new WallTextBuilder().getTexts(world.room.x, world.room.y);
+			if (wallText != null) {
+				this.add(wallText);
+			}
+			
 			this.add(builder.entities);
 			this.add(objects = new AxGroup);
 
 			this.add(player = new Player((initialX - world.room.x) * Tile.SIZE, (initialY - world.room.y) * Tile.SIZE, transitionProperties));
 			this.add(bullets = new AxGroup);
-			this.add(particles = new AxGroup);
+			this.add(particles = Particle.initialize(), false, false);
 			this.add(new HUD);
 
 			entities = new AxGroup;
@@ -93,9 +100,7 @@ package io.arkeus.antichromatic.game {
 
 			Registry.game = this;
 			Registry.player = player;
-			Particle.initialize();
 			Ax.dt = 0;
-			handleTutorials();
 		}
 
 		override public function update():void {
@@ -137,9 +142,20 @@ package io.arkeus.antichromatic.game {
 			var targetX:Number = world.room.x + x / Tile.SIZE;
 			var targetY:Number = world.room.y + y / Tile.SIZE;
 			
-			var tp:TransitionProperties = transitionProperties == null ? new TransitionProperties(new AxVector, player.hue) : transitionProperties;
+			var tp:TransitionProperties = transitionProperties == null ? new TransitionProperties(new AxVector, player.hue, RIGHT) : transitionProperties;
 			tp.hue = player.hue;
-			Ax.switchState(new GameState(targetX, targetY, ox, oy, tp));
+			Ax.camera.fadeOut(0.25, 0xff000000, function():void {
+				Registry.initialX = targetX;
+				Registry.initialY = targetY;
+				Registry.roomOffsetX = ox;
+				Registry.roomOffsetY = oy;
+				Registry.transitionProperties = tp;
+				trace("before new state", targetX, targetY, ox, oy, tp);
+				
+				Registry.save();
+				Ax.switchState(new GameState);
+				Ax.camera.fadeIn(0.25);
+			});
 		}
 		
 		public function respawn():void {
@@ -148,11 +164,14 @@ package io.arkeus.antichromatic.game {
 		
 		// hardcoded for time
 		private function handleTutorials():void {
-			handleTutorial(120, 50, Flag.INTRO, "It's been nearly a year since our world was @[bfa747]fractured@[]. Split in two, we've been trying to restore the world since. We've infiltrated the facility and obtained a suit of @[bfa747]Chromatic Armor@[] in order to pass between the @[bfa747]two fractured dimensions@[], but we have no idea where the source of the fracture is. If we can @[bfa747]destroy the source@[], we believe we can restore the world to it's former glory.", 0.01);
+			if (!Config.DIALOG_ENABLED) {
+				return;
+			}
+			/*handleTutorial(120, 50, Flag.INTRO, "It's been nearly a year since our world was @[bfa747]fractured@[]. Split in two, we've been trying to restore the world since. We've infiltrated the facility and obtained a suit of @[bfa747]Chromatic Armor@[] in order to pass between the @[bfa747]two fractured dimensions@[], but we have no idea where the source of the fracture is. If we can @[bfa747]destroy the source@[], we believe we can restore the world to it's former glory.", 0.01);
 			handleTutorial(120, 50, Flag.MOVE_TUTORIAL, "Use @[bfa747]A (or Q) and D@[] to move, and @[bfa747]W (or Z)@[] to jump. You can also use @[bfa747]R@[] to kill yourself if you get stuck.");
 			handleTutorial(150, 25, Flag.SWAP_TUTORIAL, "To swap between the white and black dimension, hit @[bfa747][Space]@[]. Harmful objects in the opposite dimension cannot hurt you.");
 			handleTutorial(60, 50, Flag.DOUBLE_TUTORIAL, "Objects that are @[bfa747]both@[] black and white exist in both dimensions, and should be @[bfa747]avoided@[] regardless of which dimension you currently reside in.");
-			handleTutorial(0, 0, Flag.BOSS, "Young warrior, you may have stolen my armor and infiltrated my fortress, but I have the shared power between the two dimensions protecting me. You'll never harm me!");
+			handleTutorial(0, 0, Flag.BOSS, "Young warrior, you may have stolen my armor and infiltrated my fortress, but I have the shared power between the two dimensions protecting me. You'll never harm me!");*/
 		}
 		
 		private function handleTutorial(roomX:uint, roomY:uint, flag:uint, message:String, delay:Number = 0.5):void {

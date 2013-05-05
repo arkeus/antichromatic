@@ -104,12 +104,15 @@ package org.axgl {
 			if (held()) {
 				animate("down");
 				labelOffset = 1;
+				label.setColor(.113, .113, .113);
 			} else if (hover()) {
 				animate("hover");
 				labelOffset = 0;
+				label.setColor(.113, .113, .113);
 			} else {
 				animate("idle");
 				labelOffset = 0;
+				label.setColor(.913, .913, .913);
 			}
 
 			super.update();

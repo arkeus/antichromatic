@@ -1,6 +1,7 @@
 package io.arkeus.antichromatic.assets {
-	import io.arkeus.antichromatic.util.Registry;
+	import io.arkeus.antichromatic.util.ParticleGroup;
 	
+	import org.axgl.AxGroup;
 	import org.axgl.particle.AxParticleEffect;
 	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.render.AxBlendMode;
@@ -14,8 +15,16 @@ package io.arkeus.antichromatic.assets {
 		public static const GREEN:String = "green";
 		public static const BLUE:String = "blue";
 		public static const RAINBOW:String = "rainbow";
+		public static const TILE:String = "tile";
 		
-		public static function initialize():void {
+		private static var group:AxGroup;
+		
+		public static function initialize():AxGroup {
+			if (group != null) {
+				return group;
+			}
+			
+			group = new ParticleGroup;
 			var effect:AxParticleEffect;
 			
 			effect = new AxParticleEffect(BULLET, Resource.PARTICLE_GUN_BLACK, 50);
@@ -28,7 +37,7 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -120; effect.yVelocity.max = 10;
 			effect.yAcceleration.min = 200; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			register(effect);
+			group.add(AxParticleSystem.register(effect));
 			
 			effect = new AxParticleEffect(WHITE_CRATE, Resource.PARTICLE_CRATE_WHITE, 20);
 			effect.amount = 10;
@@ -40,7 +49,7 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -60; effect.yVelocity.max = -10;
 			effect.yAcceleration.min = 400; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			register(effect);
+			group.add(AxParticleSystem.register(effect));
 			
 			effect = new AxParticleEffect(BLACK_CRATE, Resource.PARTICLE_CRATE_BLACK, 20);
 			effect.amount = 10;
@@ -52,7 +61,7 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -100; effect.yVelocity.max = -200;
 			effect.yAcceleration.min = 400; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 0.5; effect.lifetime.max = 1.5;
-			register(effect);
+			group.add(AxParticleSystem.register(effect));
 			
 			effect = new AxParticleEffect(EXPLOSION, Resource.PARTICLE_GUN_BLACK, 5);
 			effect.amount = 500;
@@ -64,7 +73,7 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -220; effect.yVelocity.max = 10;
 			effect.yAcceleration.min = 200; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			register(effect);
+			group.add(AxParticleSystem.register(effect));
 			
 			effect = new AxParticleEffect(RED, Resource.PARTICLE_RED, 15);
 			effect.amount = 50;
@@ -76,7 +85,7 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -300; effect.yVelocity.max = -10;
 			effect.yAcceleration.min = 400; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			register(effect);
+			group.add(AxParticleSystem.register(effect));
 			
 			effect = new AxParticleEffect(GREEN, Resource.PARTICLE_GREEN, 15);
 			effect.amount = 50;
@@ -88,7 +97,7 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -300; effect.yVelocity.max = -10;
 			effect.yAcceleration.min = 400; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			register(effect);
+			group.add(AxParticleSystem.register(effect));
 			
 			effect = new AxParticleEffect(BLUE, Resource.PARTICLE_BLUE, 15);
 			effect.amount = 50;
@@ -100,7 +109,7 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -300; effect.yVelocity.max = -10;
 			effect.yAcceleration.min = 400; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			register(effect);
+			group.add(AxParticleSystem.register(effect));
 			
 			effect = new AxParticleEffect(RAINBOW, Resource.PARTICLE_RAINBOW, 3);
 			effect.amount = 500;
@@ -112,11 +121,23 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -800; effect.yVelocity.max = 20;
 			effect.yAcceleration.min = 400; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			register(effect);
-		}
-		
-		public static function register(effect:AxParticleEffect):void {
-			Registry.game.particles.add(AxParticleSystem.register(effect));
+			group.add(AxParticleSystem.register(effect));
+			
+			effect = new AxParticleEffect(TILE, Resource.PARTICLE_TILE, 20);
+			effect.amount = 1;
+			effect.x.min = 0; effect.x.max = 0;
+			effect.y.min = 0; effect.y.max = 0;
+			effect.frameSize.x = effect.frameSize.y = 12;
+			//effect.blend = AxBlendMode.PARTICLE;
+			effect.xVelocity.min = 0; effect.xVelocity.max = 0;
+			effect.yVelocity.min = 0; effect.yVelocity.max = 0;
+			effect.lifetime.min = 1; effect.lifetime.max = 2;
+			effect.startAlpha.min = 1; effect.startAlpha.max = 1;
+			effect.endAlpha.min = 0; effect.endAlpha.max = 0;
+			//effect.endScale.min = 3; effect.endScale.max = 6;
+			group.add(AxParticleSystem.register(effect));
+			
+			return group;
 		}
 	}
 }

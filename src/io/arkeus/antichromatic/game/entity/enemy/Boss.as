@@ -2,7 +2,6 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	import io.arkeus.antichromatic.assets.Particle;
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.assets.Sound;
-	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.entity.Player;
 	import io.arkeus.antichromatic.title.TitleState;
 	import io.arkeus.antichromatic.util.Config;

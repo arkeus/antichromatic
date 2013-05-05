@@ -16,6 +16,7 @@ package io.arkeus.antichromatic.game.world {
 	import io.arkeus.antichromatic.game.entity.enemy.Spinner;
 	import io.arkeus.antichromatic.game.entity.enemy.Teleport;
 	import io.arkeus.antichromatic.game.entity.enemy.VBlade;
+	import io.arkeus.antichromatic.util.Registry;
 	import io.arkeus.antichromatic.util.TransitionProperties;
 	
 	import org.axgl.Ax;
@@ -65,12 +66,12 @@ package io.arkeus.antichromatic.game.world {
 		private function discoverRoom():Rectangle {
 			var roomPixels:BitmapData = (new rooms as Bitmap).bitmapData;
 			var rx:int = roomX + roomOffsetX, ry:int = roomY + roomOffsetY;
-			trace("Discovering room...", rx, ry);
+			//trace("Discovering room...", rx, ry);
 			var limit:uint = 0;
 			while (roomPixels.getPixel(rx, ry) != WALL) {
 				limit++;
 				if (limit > 1000) {
-					Ax.switchState(new GameState(139, 68, 0, 0, null));
+					switchRooms(139, 68, 0, 0, null);
 					return null;
 				}
 				rx--;
@@ -78,7 +79,7 @@ package io.arkeus.antichromatic.game.world {
 			while (roomPixels.getPixel(rx + 1, ry) != WALL) {
 				limit++;
 				if (limit > 1000) {
-					Ax.switchState(new GameState(139, 68, 0, 0, null));
+					switchRooms(139, 68, 0, 0, null);
 					return null;
 				}
 				ry--;
@@ -87,7 +88,7 @@ package io.arkeus.antichromatic.game.world {
 			while (roomPixels.getPixel(rx + rw, ry + rh) != WALL) {
 				limit++;
 				if (limit > 1000) {
-					Ax.switchState(new GameState(139, 68, 0, 0, null));
+					switchRooms(139, 68, 0, 0, null);
 					return null;
 				}
 				rh++;
@@ -95,13 +96,22 @@ package io.arkeus.antichromatic.game.world {
 			while (roomPixels.getPixel(rx + rw, ry + rh - 1) != WALL) {
 				limit++;
 				if (limit > 1000) {
-					Ax.switchState(new GameState(139, 68, 0, 0, null));
+					switchRooms(139, 68, 0, 0, null);
 					return null;
 				}
 				rw++;
 			}
-			trace("Discovered room:", rx, ry, rw, rh, "Limit:", limit);
+			//trace("Discovered room:", rx, ry, rw, rh, "Limit:", limit);
 			return new Rectangle(rx, ry, rw + 1, rh + 1);
+		}
+		
+		private function switchRooms(initialX:Number, initialY:Number, roomOffsetX:int, roomOffsetY:int, transitionProperties:TransitionProperties):void {
+			Registry.initialX = initialX;
+			Registry.initialY = initialY;
+			Registry.roomOffsetX = roomOffsetX;
+			Registry.roomOffsetY = roomOffsetY;
+			Registry.transitionProperties = transitionProperties;
+			Ax.switchState(new GameState);
 		}
 
 		private function generateTerrain(pixels:BitmapData):Array {
@@ -359,7 +369,7 @@ package io.arkeus.antichromatic.game.world {
 			for (var x:uint = 0; x < px.width; x++) {
 				for (var y:uint = 0; y < px.height; y++) {
 					if (px.getPixel(x, y) == 0xff9000) {
-						return new AxPoint(x, y - (5 / 16));
+						return new AxPoint(x, y + 1 - 17 / Tile.SIZE);
 					}
 				}
 			}

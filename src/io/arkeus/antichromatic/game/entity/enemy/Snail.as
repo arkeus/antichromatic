@@ -9,6 +9,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 
 	public class Snail extends HueEnemy {
 		private static const SPEED:uint = 100;
+		private var loaded:Boolean = false;
 		
 		public function Snail(hue:uint, x:uint, y:uint) {
 			super(hue, x, y + 2, Resource.SNAIL, 20, 10);
@@ -25,6 +26,13 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		}
 		
 		override public function update():void {
+			if (!loaded) {
+				if (overlaps(Registry.player)) {
+					exists = visible = active = false;
+				}
+				loaded = true;
+			}
+			
 			if (touching & RIGHT) {
 				velocity.x = -SPEED;
 			} else if (touching & LEFT) {
@@ -33,7 +41,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			
 			if (velocity.x > 0 && Registry.game.world.getTileAtPixelCoordinates(right, bottom + 2).collision == AxEntity.NONE) {
 				velocity.x = -SPEED;
-			} else if (velocity.x < 0 && Registry.game.world.getTileAtPixelCoordinates(left, bottom + 2).collision == AxEntity.NONE) {
+			} else if (velocity.x < 0 && (left <= 0 || Registry.game.world.getTileAtPixelCoordinates(left, bottom + 2).collision == AxEntity.NONE)) {
 				velocity.x = SPEED;
 			}
 			
