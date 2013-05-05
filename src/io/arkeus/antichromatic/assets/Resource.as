@@ -4,6 +4,7 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/world/tiles_black.png")] public static const TILES_BLACK:Class;
 		
 		[Embed(source = "/world/world.png")] public static const WORLD:Class;
+		[Embed(source = "/world/worldh.png")] public static const WORLD_HARD:Class;
 		[Embed(source = "/world/rooms.png")] public static const ROOMS:Class;
 		
 		[Embed(source = "/entity/player_white.png")] public static const PLAYER_WHITE:Class;

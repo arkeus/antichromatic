@@ -73,25 +73,24 @@ package io.arkeus.antichromatic.title {
 			}
 			// push state with difficulty selection
 			Ax.pushState(new NewGameState);
+			Ax.keys.releaseAll();
+			Ax.mouse.releaseAll();
 			//continueGame(false, true);
 			complete = true;
 		}
 		
-		private function continueGame(loadGame:Boolean = true, eraseGame:Boolean = false):void {
+		private function continueGame():void {
 			if (complete) {
 				return;
 			}
 			
 			Ax.camera.fadeOut(0.5, 0xff000000, function():void {
-				if (eraseGame) {
-					Registry.erase();
-				}
-				if (loadGame) {
-					Registry.load();
-				}
+				Registry.load();
 				Sound.play("start");
 				Ax.switchState(new GameState);
 				Ax.camera.fadeIn(0.5);
+				Ax.keys.releaseAll();
+				Ax.mouse.releaseAll();
 			});
 			complete = true;
 		}

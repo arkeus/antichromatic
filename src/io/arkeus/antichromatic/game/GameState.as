@@ -10,6 +10,7 @@ package io.arkeus.antichromatic.game {
 	import io.arkeus.antichromatic.game.world.text.WallTextBuilder;
 	import io.arkeus.antichromatic.pause.PauseState;
 	import io.arkeus.antichromatic.util.Config;
+	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.HUD;
 	import io.arkeus.antichromatic.util.Registry;
 	import io.arkeus.antichromatic.util.TransitionProperties;
@@ -63,7 +64,7 @@ package io.arkeus.antichromatic.game {
 			}
 			
 			var tiles:Class = transitionProperties == null || transitionProperties.hue == Entity.BLACK ? Resource.TILES_BLACK : Resource.TILES_WHITE;
-			var builder:WorldBuilder = new WorldBuilder(Resource.WORLD, tiles, Resource.ROOMS, initialX, initialY, roomOffsetX, roomOffsetY);
+			var builder:WorldBuilder = new WorldBuilder(Registry.difficulty == Difficulty.HARD ? Resource.WORLD_HARD : Resource.WORLD, tiles, Resource.ROOMS, initialX, initialY, roomOffsetX, roomOffsetY);
 			world = builder.build(transitionProperties);
 			if (world == null) {
 				return;
