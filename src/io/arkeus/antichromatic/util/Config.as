@@ -2,13 +2,13 @@ package io.arkeus.antichromatic.util {
 	import io.arkeus.antichromatic.assets.Resource;
 
 	public class Config {
-		public static const DEBUG_MODE:Boolean = true;
+		public static const DEBUG_MODE:Boolean = false;
 		public static const INVINCIBLE:Boolean = DEBUG_MODE || false;
 		public static const INFINITE_JUMPS:Boolean = DEBUG_MODE || false;
-		public static const ALL_ITEMS:Boolean = DEBUG_MODE || true;
+		public static const ALL_ITEMS:Boolean = DEBUG_MODE || false;
 		public static const SOUND_ENABLED:Boolean = !DEBUG_MODE || false;
 		public static const DIALOG_ENABLED:Boolean = !DEBUG_MODE || false;
-		public static const TITLE_ENABLED:Boolean = DEBUG_MODE || false;
+		public static const TITLE_ENABLED:Boolean = DEBUG_MODE || true;
 		public static const CLICK_TO_MOVE:Boolean = DEBUG_MODE || false;
 		
 		public static const MESSAGE_OPTIONS:Object = {

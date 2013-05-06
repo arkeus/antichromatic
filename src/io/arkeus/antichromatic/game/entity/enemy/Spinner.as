@@ -2,6 +2,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	import io.arkeus.antichromatic.assets.Particle;
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.game.entity.Bullet;
+	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
@@ -59,7 +60,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		private function shoot():void {
 			var dx:Number = Math.cos(aim);
 			var dy:Number = Math.sin(aim);
-			var ring:Ring = new Ring(COLOR, center.x - 5, center.y - 5, dx, dy);
+			var ring:Ring = new Ring(Registry.difficulty == Difficulty.NORMAL ? hue : COLOR, center.x - 5, center.y - 5, dx, dy);
 			ring.x += ring.velocity.x * Ax.dt * 5;
 			ring.y += ring.velocity.y * Ax.dt * 5;
 			Registry.game.objects.add(ring);

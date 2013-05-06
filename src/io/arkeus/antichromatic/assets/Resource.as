@@ -27,6 +27,7 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/entity/ring.png")] public static const RING:Class;
 		[Embed(source = "/entity/snail.png")] public static const SNAIL:Class;
 		[Embed(source = "/entity/spinner.png")] public static const SPINNER:Class;
+		[Embed(source = "/entity/spin_cannon.png")] public static const SPIN_CANNON:Class;
 		[Embed(source = "/entity/crate.png")] public static const CRATE:Class;
 		[Embed(source = "/entity/spikes.png")] public static const SPIKE:Class;
 		[Embed(source = "/entity/cannon.png")] public static const CANNON:Class;

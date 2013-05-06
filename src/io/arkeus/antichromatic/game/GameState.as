@@ -47,7 +47,6 @@ package io.arkeus.antichromatic.game {
 		public var frozen:Boolean = false;
 		
 		public function GameState() {
-			trace("new gamestate", Registry.initialX, Registry.initialY, Registry.roomOffsetX, Registry.roomOffsetY, "tp:", Registry.transitionProperties);
 			this.initialX = Registry.initialX;
 			this.initialY = Registry.initialY;
 			this.roomOffsetX = Registry.roomOffsetX;
@@ -151,7 +150,6 @@ package io.arkeus.antichromatic.game {
 				Registry.roomOffsetX = ox;
 				Registry.roomOffsetY = oy;
 				Registry.transitionProperties = tp;
-				trace("before new state", targetX, targetY, ox, oy, tp);
 				
 				Registry.save();
 				Ax.switchState(new GameState);

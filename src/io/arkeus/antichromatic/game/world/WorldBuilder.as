@@ -13,6 +13,7 @@ package io.arkeus.antichromatic.game.world {
 	import io.arkeus.antichromatic.game.entity.enemy.Laser;
 	import io.arkeus.antichromatic.game.entity.enemy.Snail;
 	import io.arkeus.antichromatic.game.entity.enemy.Spike;
+	import io.arkeus.antichromatic.game.entity.enemy.SpinCannon;
 	import io.arkeus.antichromatic.game.entity.enemy.Spinner;
 	import io.arkeus.antichromatic.game.entity.enemy.Teleport;
 	import io.arkeus.antichromatic.game.entity.enemy.VBlade;
@@ -241,6 +242,14 @@ package io.arkeus.antichromatic.game.world {
 					entities.add(new Spinner(px, py));
 					break;
 				}
+				case WHITE_SPIN_CANNON:  {
+					entities.add(new SpinCannon(Entity.WHITE, px, py));
+					break;
+				}
+				case BLACK_SPIN_CANNON:  {
+					entities.add(new SpinCannon(Entity.BLACK, px, py));
+					break;
+				}
 				case BOSS:  {
 					entities.add(new Boss(px, py));
 					break;
@@ -413,6 +422,9 @@ package io.arkeus.antichromatic.game.world {
 		private static const BLACK_SNAIL:uint = 0x002a6f;
 		
 		private static const SPINNER:uint = 0xdb286b;
+		
+		private static const WHITE_SPIN_CANNON:uint = 0xffd482;
+		private static const BLACK_SPIN_CANNON:uint = 0x8f5e00;
 		
 		private static const RED:uint = 0xdd0000;
 		private static const GREEN:uint = 0x0add00;
