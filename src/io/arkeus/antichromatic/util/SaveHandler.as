@@ -19,6 +19,7 @@ package io.arkeus.antichromatic.util {
 				so.data.swaps = Registry.swaps;
 				so.data.items = Registry.items;
 				so.data.flags = Registry.flags;
+				so.data.difficulty = Registry.difficulty;
 				so.data.musicMuted = Ax.musicMuted;
 				so.data.soundMuted = Ax.soundMuted;
 				
@@ -29,7 +30,6 @@ package io.arkeus.antichromatic.util {
 				so.data.transitionProperties = Registry.transitionProperties == null ? null : Registry.transitionProperties.serialize();
 				
 				so.data.mapData = Registry.mapData;
-				trace("saving md", so.data.mapData);
 				
 				so.flush();
 				trace("Successfully saved");
@@ -45,6 +45,7 @@ package io.arkeus.antichromatic.util {
 				Registry.swaps = so.data.swaps;
 				Registry.items = so.data.items;
 				Registry.flags = so.data.flags;
+				Registry.difficulty = so.data.difficulty;
 				Ax.musicMuted = so.data.musicMuted;
 				Ax.soundMuted = so.data.soundMuted;
 				
@@ -55,7 +56,6 @@ package io.arkeus.antichromatic.util {
 				if (so.data.transitionProperties != null) { Registry.transitionProperties = TransitionProperties.deserialize(so.data.transitionProperties as Array); }
 				
 				if (so.data.mapData != null) { Registry.loadMap(so.data.mapData); }
-				trace("loading md", so.data.mapData);
 				
 				trace("Successfully loaded");
 			} catch (error:Error) {

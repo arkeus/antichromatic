@@ -6,8 +6,8 @@ package io.arkeus.antichromatic.util {
 		public static const INVINCIBLE:Boolean = DEBUG_MODE || false;
 		public static const INFINITE_JUMPS:Boolean = DEBUG_MODE || false;
 		public static const ALL_ITEMS:Boolean = DEBUG_MODE || false;
-		public static const SOUND_ENABLED:Boolean = !DEBUG_MODE || false;
-		public static const DIALOG_ENABLED:Boolean = !DEBUG_MODE || false;
+		public static const SOUND_ENABLED:Boolean = DEBUG_MODE ? false : false;
+		public static const DIALOG_ENABLED:Boolean = DEBUG_MODE ? false : false;
 		public static const TITLE_ENABLED:Boolean = DEBUG_MODE || true;
 		public static const CLICK_TO_MOVE:Boolean = DEBUG_MODE || false;
 		

@@ -1,6 +1,7 @@
 package io.arkeus.antichromatic.game.world.text {
 	import flash.geom.Rectangle;
 	
+	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.Item;
 	import io.arkeus.antichromatic.util.Registry;
 	
@@ -38,6 +39,9 @@ package io.arkeus.antichromatic.game.world.text {
 		}
 		
 		public function getTexts(x:uint, y:uint):AxGroup {
+			if (Registry.difficulty == Difficulty.HARD) {
+				return null;
+			}
 			var textArray:Array = texts[getKey(x, y)] as Array;
 			if (textArray == null || textArray.length == 0) {
 				return null;
@@ -53,7 +57,6 @@ package io.arkeus.antichromatic.game.world.text {
 				var text:AxText = new AxText(rect.x, rect.y, null, info[1], rect.width, "center");
 				text.alpha = 0.7;
 				group.add(text);
-				trace(text.text);
 			}
 			return group;
 		}

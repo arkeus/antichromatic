@@ -2,6 +2,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	import io.arkeus.antichromatic.assets.Particle;
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.assets.Sound;
+	import io.arkeus.antichromatic.game.world.Tile;
 	import io.arkeus.antichromatic.util.Config;
 	import io.arkeus.antichromatic.util.Item;
 	import io.arkeus.antichromatic.util.Registry;
@@ -38,6 +39,8 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			if (overlaps(Registry.player)) {
 				Registry.obtainItem(itemId);
 				AxParticleSystem.emit(Particle.EXPLOSION, center.x, center.y);
+				Registry.initialX = Registry.game.initialX = x / Tile.SIZE + Registry.game.world.room.x;
+				Registry.initialY = Registry.game.initialY = y / Tile.SIZE + Registry.game.world.room.y + 1 - 17 / Tile.SIZE;
 				destroy();
 				Sound.play("collect");
 				//AxMessage.show(Item.MESSAGES[itemId], Config.MESSAGE_OPTIONS);
