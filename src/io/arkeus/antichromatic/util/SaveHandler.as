@@ -20,8 +20,6 @@ package io.arkeus.antichromatic.util {
 				so.data.items = Registry.items;
 				so.data.flags = Registry.flags;
 				so.data.difficulty = Registry.difficulty;
-				so.data.musicMuted = Ax.musicMuted;
-				so.data.soundMuted = Ax.soundMuted;
 				
 				so.data.initialX = Registry.initialX;
 				so.data.initialY = Registry.initialY;
@@ -46,8 +44,6 @@ package io.arkeus.antichromatic.util {
 				Registry.items = so.data.items;
 				Registry.flags = so.data.flags;
 				Registry.difficulty = so.data.difficulty;
-				Ax.musicMuted = so.data.musicMuted;
-				Ax.soundMuted = so.data.soundMuted;
 				
 				if (so.data.initialX != null) { Registry.initialX = so.data.initialX; }
 				if (so.data.initialY != null) { Registry.initialY = so.data.initialY; }
@@ -66,6 +62,26 @@ package io.arkeus.antichromatic.util {
 		public function erase():void {
 			Registry.reset();
 			save();
+		}
+
+		public function saveGlobals(musicMuted:Boolean, soundMuted:Boolean, quality:uint):void {
+			try {
+				so.data.musicMuted = musicMuted;
+				so.data.soundMuted = soundMuted;
+				so.data.quality = quality;
+			} catch (error:Error) {
+				trace("Error saving globals", error);
+			}
+		}
+		
+		public function loadGlobals():void {
+			try {
+				if (so.data.musicMuted != null) { Ax.musicMuted = so.data.musicMuted; }
+				if (so.data.soundMuted != null) { Ax.soundMuted = so.data.soundMuted; }
+				if (so.data.quality != null) { Registry.quality = so.data.quality; }
+			} catch (error:Error) {
+				trace("Error loading globals", error);
+			}
 		}
 	}
 }

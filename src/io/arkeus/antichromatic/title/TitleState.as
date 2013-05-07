@@ -13,7 +13,6 @@ package io.arkeus.antichromatic.title {
 	import org.axgl.AxSprite;
 	import org.axgl.AxState;
 	import org.axgl.AxU;
-	import org.axgl.input.AxKey;
 	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.render.AxBlendMode;
 
@@ -22,7 +21,6 @@ package io.arkeus.antichromatic.title {
 		private var foreground:AxSprite;
 		private var logo:AxSprite;
 		private var logoColor:AxSprite;
-		private var complete:Boolean = false;
 		private var buttons:AxGroup;
 		
 		public function TitleState() {
@@ -68,7 +66,7 @@ package io.arkeus.antichromatic.title {
 		}
 		
 		private function newGame():void {
-			if (complete) {
+			if (Registry.loading) {
 				return;
 			}
 			// push state with difficulty selection
@@ -76,11 +74,11 @@ package io.arkeus.antichromatic.title {
 			Ax.keys.releaseAll();
 			Ax.mouse.releaseAll();
 			//continueGame(false, true);
-			complete = true;
+			Registry.loading = true;
 		}
 		
 		private function continueGame():void {
-			if (complete) {
+			if (Registry.loading) {
 				return;
 			}
 			
@@ -88,27 +86,29 @@ package io.arkeus.antichromatic.title {
 				Registry.load();
 				Sound.play("start");
 				Ax.switchState(new GameState);
-				Ax.camera.fadeIn(0.5);
+				Ax.camera.fadeIn(0.5, function():void { Registry.loading = false; });
 				Ax.keys.releaseAll();
 				Ax.mouse.releaseAll();
 			});
-			complete = true;
+			Registry.loading = true;
 		}
 		
 		private function credits():void {
-			if (complete) {
+			if (Registry.loading) {
 				return;
 			}
 			// push state with credits
-			complete = true;
+			Registry.loading = true;
 		}
 		
 		private function options():void {
-			if (complete) {
+			if (Registry.loading) {
 				return;
 			}
 			// push state with options
-			complete = true;
+			Ax.pushState(new OptionsState);
+			Ax.keys.releaseAll();
+			Ax.mouse.releaseAll();
 		}
 		
 		private function logoColorGrow():void {
@@ -134,13 +134,13 @@ package io.arkeus.antichromatic.title {
 		}
 		
 		override public function onPause(sourceState:Class):void {
-			buttons.visible = false;
+			buttons.visible = buttons.active = buttons.exists = false;
 		}
 		
 		override public function onResume(sourceState:Class):void {
-			buttons.visible = true;
+			buttons.visible = buttons.active = buttons.exists = true;
 			if (sourceState != PauseState) {
-				complete = false;
+				Registry.loading = false;
 			}
 		}
 	}

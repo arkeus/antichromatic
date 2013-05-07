@@ -34,6 +34,8 @@ package io.arkeus.antichromatic.util {
 		
 		private static var saveHandler:SaveHandler;
 		
+		public static var loading:Boolean = false;
+		
 		public static function reset():void {
 			deaths = time = swaps = 0;
 			items = Config.ALL_ITEMS ? new <uint>[1, 1, 1, 1, 1, 1, 1, 1] : new <uint>[0, 0, 0, 0, 0, 0, 0, 0];
@@ -59,6 +61,7 @@ package io.arkeus.antichromatic.util {
 		public static function initialize():void {
 			reset();
 			saveHandler = new SaveHandler;
+			saveHandler.loadGlobals();
 		}
 		
 		public static var music:AxSound;
@@ -88,6 +91,10 @@ package io.arkeus.antichromatic.util {
 		
 		public static function erase():void {
 			saveHandler.erase();
+		}
+		
+		public static function saveGlobals():void {
+			saveHandler.saveGlobals(Ax.musicMuted, Ax.soundMuted, quality);
 		}
 		
 		public static function loadMap(mapData:Object):void {

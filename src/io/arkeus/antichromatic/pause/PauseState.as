@@ -2,18 +2,25 @@ package io.arkeus.antichromatic.pause {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.world.Tile;
+	import io.arkeus.antichromatic.title.TitleState;
 	import io.arkeus.antichromatic.util.Item;
+	import io.arkeus.antichromatic.util.Options;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
+	import org.axgl.AxButton;
 	import org.axgl.AxSprite;
 	import org.axgl.AxState;
 	import org.axgl.input.AxKey;
-	import org.axgl.text.AxText;
 
 	public class PauseState extends AxState {
 		public var frame:AxSprite;
 		public var map:AxSprite;
+		
+		private var music:AxButton;
+		private var sound:AxButton;
+		private var quality:AxButton;
+		private var backButton:AxButton;
 		
 		override public function create():void {
 			noScroll();
@@ -35,27 +42,24 @@ package io.arkeus.antichromatic.pause {
 			addItem(Item.EMERALD_SHARD, 104, 198);
 			addItem(Item.AZURE_SHARD, 129, 198);
 			
-			this.add(map = new AxSprite(211, 136));
+			this.add(map = new AxSprite(211, 86));
 			map.load(Registry.map);
 			addMapTarget();
 			
-			var bg:AxSprite = new AxSprite(50, Ax.viewHeight - 77);
-			bg.create(260, 13, 0xaa000000);
-			this.add(bg);
+			this.add(music = new AxButton(67, 176, Resource.BUTTON, 107, 24).text("Music On", null, 7, 3).onClick(toggleMusic));
+			this.add(sound = new AxButton(186, 176, Resource.BUTTON, 107, 24).text("Sound On", null, 7, 3).onClick(toggleSound));
+			this.add(quality = new AxButton(67, 212, Resource.BUTTON, 107, 24).text("High Quality", null, 7, 3).onClick(toggleQuality));
+			this.add(backButton = new AxButton(186, 212, Resource.BUTTON, 107, 24).text("Quit", null, 7, 3).onClick(quit));
 			
-			var mute:AxText = new AxText(55, Ax.viewHeight - 75, null, "PRESS @[ffcccc]M@[] TO MUTE", 250, "left");
-			mute.alpha = 0.8;
-			this.add(mute);
-			
-			var quality:AxText = new AxText(61, Ax.viewHeight - 75, null, "PRESS @[ffcccc]L@[] FOR LOW QUALITY", 250, "right");
-			quality.alpha = 0.8;
-			this.add(quality);
+			Options.updateMusicButton(music);
+			Options.updateSoundButton(sound);
+			Options.updateQualityButton(quality);
 			
 			Ax.keys.releaseAll();
 		}
 		
 		private function addItemName(item:int, x:uint, y:uint, index:uint):void {
-			var itemName:AxSprite = new AxSprite(x, y, Resource.TEXTS, 100, 5);
+			var itemName:AxSprite = new AxSprite(x, y - 50, Resource.TEXTS, 100, 5);
 			if (item > -1 && !Registry.hasItem(item)) {
 				itemName.alpha = 0.5;
 				index = 6;
@@ -65,7 +69,7 @@ package io.arkeus.antichromatic.pause {
 		}
 		
 		private function addItem(itemId:uint, x:uint, y:uint):void {
-			var item:AxSprite = new AxSprite(x, y, Resource.ITEMS, 8, 8);
+			var item:AxSprite = new AxSprite(x, y - 50, Resource.ITEMS, 8, 8);
 			if (!Registry.hasItem(itemId)) {
 				item.alpha = 0.2;
 			}
@@ -74,7 +78,7 @@ package io.arkeus.antichromatic.pause {
 		}
 		
 		override public function update():void {
-			if (Ax.keys.pressed(AxKey.ANY)) {
+			if (Ax.keys.pressed(AxKey.ANY) && !Registry.loading) {
 				Ax.popState();
 				Ax.keys.releaseAll();
 			}
@@ -92,6 +96,33 @@ package io.arkeus.antichromatic.pause {
 			
 			var target:AxSprite = new AxSprite(map.x + px, map.y + py, Resource.MAP_TARGET);
 			this.add(target);
+		}
+		
+		private function toggleMusic():void {
+			Options.toggleMusic(music);
+		}
+		
+		private function toggleSound():void {
+			Options.toggleSound(sound);
+		}
+		
+		private function toggleQuality():void {
+			Options.toggleQuality(quality);
+		}
+		
+		private function quit():void {
+			if (Registry.loading) {
+				return;
+			}
+			Ax.camera.fadeOut(0.5, 0xff000000, function():void {
+				Registry.save();
+				Ax.popState();
+				Ax.switchState(new TitleState);
+				Ax.camera.fadeIn(0.5, function():void { Registry.loading = false; });
+				Ax.keys.releaseAll();
+				Ax.mouse.releaseAll();
+			});
+			Registry.loading = true;
 		}
 	}
 }
