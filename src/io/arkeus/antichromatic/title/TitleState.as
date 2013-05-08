@@ -98,7 +98,9 @@ package io.arkeus.antichromatic.title {
 				return;
 			}
 			// push state with credits
-			Registry.loading = true;
+			Ax.pushState(new CreditsState);
+			Ax.keys.releaseAll();
+			Ax.mouse.releaseAll();
 		}
 		
 		private function options():void {
