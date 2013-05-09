@@ -5,6 +5,7 @@ package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.world.Tile;
 	import io.arkeus.antichromatic.pause.PauseState;
+	import io.arkeus.antichromatic.scene.IntroState;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
@@ -13,6 +14,7 @@ package io.arkeus.antichromatic.title {
 	import org.axgl.AxSprite;
 	import org.axgl.AxState;
 	import org.axgl.AxU;
+	import org.axgl.input.AxKey;
 	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.render.AxBlendMode;
 
@@ -58,9 +60,11 @@ package io.arkeus.antichromatic.title {
 		}
 		
 		override public function update():void {
-			GameState.handleCommonLogic();
-			
 			logoColor.alpha = Math.sin(Ax.now / 500) * 0.5;
+			
+			if (Ax.keys.pressed(AxKey.M)) {
+				Ax.switchState(new IntroState);
+			}
 			
 			super.update();
 		}

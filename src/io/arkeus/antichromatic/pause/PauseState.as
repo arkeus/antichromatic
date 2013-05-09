@@ -83,7 +83,6 @@ package io.arkeus.antichromatic.pause {
 				Ax.keys.releaseAll();
 			}
 			
-			GameState.handleCommonLogic();
 			super.update();
 		}
 		

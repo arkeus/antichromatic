@@ -17,9 +17,10 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			animate("walk");
 			acceleration.y = World.GRAVITY;
 			killable = true;
-			width = 16;
+			width = 12;
 			height = 8;
-			offset.x = offset.y = 2;
+			offset.x = 4;
+			offset.y = 2;
 			
 			velocity.x = SPEED;
 			deathSound = "enemy-die";
@@ -39,9 +40,9 @@ package io.arkeus.antichromatic.game.entity.enemy {
 				velocity.x = SPEED;
 			}
 			
-			if (velocity.x > 0 && Registry.game.world.getTileAtPixelCoordinates(right, bottom + 2).collision == AxEntity.NONE) {
+			if (velocity.x > 0 && Registry.game.world.getTileAtPixelCoordinates(right + 2, bottom + 2).collision == AxEntity.NONE) {
 				velocity.x = -SPEED;
-			} else if (velocity.x < 0 && (left <= 0 || Registry.game.world.getTileAtPixelCoordinates(left, bottom + 2).collision == AxEntity.NONE)) {
+			} else if (velocity.x < 0 && (left <= 0 || Registry.game.world.getTileAtPixelCoordinates(left - 2, bottom + 2).collision == AxEntity.NONE)) {
 				velocity.x = SPEED;
 			}
 			

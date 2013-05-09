@@ -7,6 +7,9 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/world/worldh.png")] public static const WORLD_HARD:Class;
 		[Embed(source = "/world/rooms.png")] public static const ROOMS:Class;
 		
+		[Embed(source = "/world/intro.png")] public static const INTRO:Class;
+		[Embed(source = "/world/intro_rooms.png")] public static const INTRO_ROOMS:Class;
+		
 		[Embed(source = "/entity/player_white.png")] public static const PLAYER_WHITE:Class;
 		[Embed(source = "/entity/gun_white_right.png")] public static const GUN_WHITE_RIGHT:Class;
 		[Embed(source = "/entity/gun_white_up.png")] public static const GUN_WHITE_UP:Class;

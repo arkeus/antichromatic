@@ -109,7 +109,6 @@ package io.arkeus.antichromatic.game {
 			}
 			Registry.time += Ax.adt;
 			
-			GameState.handleCommonLogic();
 			super.update();
 			Ax.collide(entities, world, collideWorld);
 			Ax.overlap(player, harmful, collideHarmful, grid);
@@ -179,28 +178,6 @@ package io.arkeus.antichromatic.game {
 					Registry.flags[flag] = 1;
 					AxMessage.show(message, Config.MESSAGE_OPTIONS);
 				});
-			}
-		}
-		
-		public static function handleCommonLogic():void {
-			if (Ax.keys.pressed(AxKey.M)) {
-				if (Ax.soundMuted) {
-					Ax.soundMuted = false;
-					Ax.musicMuted = false;
-					Registry.music.volume = 0.7;
-				} else {
-					Ax.soundMuted = true;
-					Ax.musicMuted = true;
-					Registry.music.volume = 0;
-				}
-			}
-			
-			if (Ax.keys.pressed(AxKey.L)) {
-				if (Registry.quality == 0) {
-					Registry.quality = 1;
-				} else {
-					Registry.quality = 0;
-				}
 			}
 		}
 	}
