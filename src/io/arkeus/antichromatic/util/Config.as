@@ -24,5 +24,19 @@ package io.arkeus.antichromatic.util {
 			delay: 4,
 			speedDelay: 2
 		};
+		
+		public static const SCENE_MESSAGE_OPTIONS:Object = {
+			background: Resource.MESSAGE_BOX,
+			x: 55,
+			y: 225,
+			width: 250,
+			height: 55,
+			paddingLeft: 12,
+			paddingRight: 12,
+			paddingTop: 12,
+			paddingBottom: 12,
+			delay: 10,
+			speedDelay: 10
+		};
 	}
 }

@@ -78,7 +78,6 @@ package io.arkeus.antichromatic.title {
 			Ax.keys.releaseAll();
 			Ax.mouse.releaseAll();
 			//continueGame(false, true);
-			Registry.loading = true;
 		}
 		
 		private function continueGame():void {

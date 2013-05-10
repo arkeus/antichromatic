@@ -2,6 +2,7 @@ package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.GameState;
+	import io.arkeus.antichromatic.scene.IntroState;
 	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.Registry;
 	
@@ -31,7 +32,7 @@ package io.arkeus.antichromatic.title {
 				Registry.erase();
 				Registry.difficulty = difficulty;
 				Ax.popState();
-				Ax.switchState(new GameState);
+				Ax.switchState(difficulty == Difficulty.NORMAL ? new IntroState : new GameState);
 				Sound.play("start");
 				Ax.camera.fadeIn(0.5);
 				Ax.keys.releaseAll();
