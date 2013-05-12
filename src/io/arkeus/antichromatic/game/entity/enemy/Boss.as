@@ -5,12 +5,14 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	import io.arkeus.antichromatic.game.entity.Player;
 	import io.arkeus.antichromatic.title.TitleState;
 	import io.arkeus.antichromatic.util.Config;
+	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
 	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.plus.message.AxMessage;
 	import org.axgl.render.AxBlendMode;
+	import org.axgl.util.AxTimer;
 
 	public class Boss extends HueEnemy {
 		private static const BASE_HP:uint = 50;
@@ -19,11 +21,12 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		
 		public var recharge:Number = RECHARGE_DELAY;
 		public var phase:uint = 0;
-		public var crystalsRemaining:int = 3;
+		public var crystalsRemaining:int = 0;
+		private var explodeTimer:AxTimer;
 		
 		public function Boss(x:uint, y:uint) {
-			super(COLOR, x, y - 5, Resource.BOSS, Player.FRAME_WIDTH, Player.FRAME_HEIGHT);
-			resize();
+			super(COLOR, x, y - 5, Resource.BOSS_RED, Player.FRAME_WIDTH, Player.FRAME_HEIGHT);
+			resize(Resource.BOSS_RED);
 			
 			killable = true;
 			harmful = true;
@@ -45,14 +48,14 @@ package io.arkeus.antichromatic.game.entity.enemy {
 					velocity.x = SPEED;
 				}
 			} else {
-				if (center.x < Registry.player.center.x) {
+				if (center.x < Registry.player.center.x - 12) {
 					velocity.x = SPEED;
-				} else {
+				} else if (center.x > Registry.player.center.x + 12) {
 					velocity.x = -SPEED;
 				}
 				
 				if (Math.abs(center.x - Registry.player.center.x) < 100) {
-					velocity.x *= 0.5;
+					velocity.x = velocity.x > 0 ? SPEED * 0.5 : -SPEED * 0.5;
 				}
 				
 				recharge -= Ax.dt;
@@ -84,17 +87,57 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		
 		private function spawnCrystal(hue:uint, x:uint, y:uint):void {
 			Registry.game.objects.add(new Crystal(hue, x, y, this));
+			crystalsRemaining++;
 		}
 		
 		private function phaseChange(phase:uint):void {
-			if (phase == 1) {
-				spawnCrystal(BLACK, 9 * 12, 28 * 12);
-				spawnCrystal(WHITE, 52 * 12, 28 * 12);
-				spawnCrystal(COLOR, 43 * 12, 14 * 12);
+			if (Registry.difficulty == Difficulty.NORMAL) {
+				if (phase == 1) {
+					spawnCrystal(BLACK, 9 * 12, 28 * 12);
+					spawnCrystal(WHITE, 52 * 12, 28 * 12);
+					spawnCrystal(COLOR, 43 * 12, 14 * 12);
+				}
+			} else {
+				switch (phase) {
+					case 2:
+						destroy();
+						resize(Resource.BOSS_GREEN);
+						spawnCrystal(BLACK, 9 * 12, 28 * 12);
+						AxParticleSystem.emit(Particle.RED, center.x - 6, center.y - 6);
+						explodeTimer = addTimer(4, explode, 0);
+						break;
+					case 3:
+						resize(Resource.BOSS_BLUE);
+						spawnCrystal(WHITE, 52 * 12, 28 * 12);
+						AxParticleSystem.emit(Particle.GREEN, center.x - 6, center.y - 6);
+						explodeTimer.stop();
+						explodeTimer = addTimer(3, explode, 0);
+						break;
+					case 4:
+						resize(Resource.BOSS);
+						spawnCrystal(COLOR, 43 * 12, 14 * 12);
+						AxParticleSystem.emit(Particle.BLUE, center.x - 6, center.y - 6);
+						explodeTimer.stop();
+						explodeTimer = addTimer(2, explode, 0);
+						break;
+				}
 			}
 		}
 		
-		private function resize():void {
+		private function explode():void {
+			for (var a:Number = angle; a < angle + 360; a += 30) {
+				var radians:Number = a * Math.PI / 180;
+				var dx:Number = Math.cos(radians);
+				var dy:Number = Math.sin(radians);
+				var ring:Ring = new Ring(COLOR, center.x - 5, center.y - 5, dx, dy);
+				ring.x += ring.velocity.x * Ax.dt * 5;
+				ring.y += ring.velocity.y * Ax.dt * 5;
+				Registry.game.objects.add(ring);
+			}
+		}
+		
+		private function resize(resource:Class):void {
+			load(Registry.difficulty == Difficulty.NORMAL ? Resource.BOSS : resource, Player.FRAME_WIDTH, Player.FRAME_HEIGHT);
 			width = 10;
 			offset.x = 5;
 			height = 17;
@@ -116,8 +159,17 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		}
 		
 		override public function destroy():void {
+			if (Registry.player.frozen) {
+				return;
+			}
+			
 			Registry.player.invincible = true;
+			Registry.game.ticking = false;
 			AxParticleSystem.emit(Particle.RAINBOW, center.x, center.y);
+			
+			updateTimes();
+			Registry.save();
+			Registry.saveGlobals();
 			
 			var m:uint = Math.floor(Registry.time / 60);
 			var s:uint = Math.floor(Registry.time % 60);
@@ -133,6 +185,24 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			});
 			
 			super.destroy();
+		}
+		
+		private function updateTimes():void {
+			if (Registry.difficulty == Difficulty.NORMAL) {
+				if (Registry.deaths < Registry.normalDeaths) {
+					Registry.normalDeaths = Registry.deaths;
+				}
+				if (Registry.time < Registry.normalTime) {
+					Registry.normalTime = Registry.time;
+				}
+			} else {
+				if (Registry.deaths < Registry.hardDeaths) {
+					Registry.hardDeaths = Registry.deaths;
+				}
+				if (Registry.time < Registry.hardTime) {
+					Registry.hardTime = Registry.time;
+				}
+			}
 		}
 	}
 }

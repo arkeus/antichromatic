@@ -27,7 +27,8 @@ package io.arkeus.antichromatic.game.entity.enemy {
 					break;
 			}
 			
-			width = height = 12;
+			width = 12;
+			height = 17;
 			offset.x = offset.y = 5;
 			
 			hp = hue == COLOR ? 100 : 40;
