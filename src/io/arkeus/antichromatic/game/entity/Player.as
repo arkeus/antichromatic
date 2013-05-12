@@ -179,7 +179,7 @@ package io.arkeus.antichromatic.game.entity {
 						Sound.play("jump");
 					}
 				} else if (clutching > 0 && Registry.hasItem(Item.MOON_BOOTS)) {
-					velocity.y = -JUMP_SPEED * 0.7;
+					velocity.y = -JUMP_SPEED * 0.75;
 					velocity.x = (clutchingDirection == LEFT ? JUMP_SPEED : -JUMP_SPEED) / 2;
 					maxVelocity.y = 600;
 					clutching = -1;
@@ -196,9 +196,9 @@ package io.arkeus.antichromatic.game.entity {
 		
 		private function handleFacing():void {
 			aim = -Math.atan2(Ax.mouse.y - center.y, Ax.mouse.x - center.x);
-			if (Ax.mouse.x != mx || Ax.mouse.y != my) {
-				mx = Ax.mouse.x;
-				my = Ax.mouse.y;
+			if (Ax.mouse.screen.x != mx || Ax.mouse.screen.y != my) {
+				mx = Ax.mouse.screen.x;
+				my = Ax.mouse.screen.y;
 				pointGunAtRadians(aim);
 			}
 			
