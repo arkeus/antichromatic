@@ -22,6 +22,9 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/entity/gun_black_down.png")] public static const GUN_BLACK_DOWN:Class;
 		[Embed(source = "/entity/bullet_black.png")] public static const BULLET_BLACK:Class;
 		
+		[Embed(source = "/entity/boss_red.png")] public static const BOSS_RED:Class;
+		[Embed(source = "/entity/boss_green.png")] public static const BOSS_GREEN:Class;
+		[Embed(source = "/entity/boss_blue.png")] public static const BOSS_BLUE:Class;
 		[Embed(source = "/entity/boss.png")] public static const BOSS:Class;
 		[Embed(source = "/entity/crystals.png")] public static const CRYSTALS:Class;		
 		
