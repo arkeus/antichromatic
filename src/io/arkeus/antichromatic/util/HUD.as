@@ -13,27 +13,24 @@ package io.arkeus.antichromatic.util {
 		public function HUD() {
 			noScroll();
 			
-			time = new AxText(Ax.viewWidth - 40, Ax.viewHeight - 12, null, "00:00", 40, "center");
+			time = new AxText(Ax.viewWidth - 44, Ax.viewHeight - 12, null, "00:00", 48, "center");
 			time.alpha = 0.7;
 			timeFrame = new AxSprite(time.x - 2, time.y - 2);
-			timeFrame.create(time.width + 6, time.height + 4, 0xaa000000);
+			timeFrame.create(44, time.height + 4, 0xaa000000);
 			this.add(timeFrame);
 			this.add(time);
 			
-			deaths = new AxText(6, Ax.viewHeight - 12, null, "10 Deaths", 70, "center");
+			deaths = new AxText(6, Ax.viewHeight - 12, null, "10 Deaths", 76, "center");
 			deaths.alpha = 0.7;
 			deathFrame = new AxSprite(deaths.x - 2, time.y - 2);
-			deathFrame.create(70, deaths.height + 4, 0xaa000000);
+			deathFrame.create(76, deaths.height + 4, 0xaa000000);
 			this.add(deathFrame);
 			this.add(deaths);
 		}
 		
 		override public function update():void {
-			deaths.text = Registry.deaths + " Deaths";
-			
-			var m:uint = Math.floor(Registry.time / 60);
-			var s:uint = Math.floor(Registry.time % 60);
-			time.text = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+			deaths.text = Registry.deaths + " Death" + (Registry.deaths == 1 ? "" : "s");
+			time.text = Utils.formatTime(Registry.time);
 			
 			super.update();
 		}
