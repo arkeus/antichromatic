@@ -11,7 +11,8 @@ package io.arkeus.antichromatic.title {
 		private var credits:AxSprite;
 		
 		override public function create():void {
-			this.add(backButton = new AxButton(126, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
+			noScroll();
+			this.add(backButton = new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
 			this.add(credits = new AxSprite(0, 0, Resource.CREDITS));
 		}
 		

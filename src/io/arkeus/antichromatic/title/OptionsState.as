@@ -13,6 +13,8 @@ package io.arkeus.antichromatic.title {
 		private var backButton:AxButton;
 		
 		override public function create():void {
+			noScroll();
+			
 			this.add(music = new AxButton(67, 156, Resource.BUTTON, 107, 24).text("Music On", null, 7, 3).onClick(toggleMusic));
 			this.add(sound = new AxButton(186, 156, Resource.BUTTON, 107, 24).text("Sound On", null, 7, 3).onClick(toggleSound));
 			this.add(quality = new AxButton(67, 192, Resource.BUTTON, 107, 24).text("High Quality", null, 7, 3).onClick(toggleQuality));

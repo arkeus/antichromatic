@@ -12,11 +12,27 @@ package io.arkeus.antichromatic.title {
 	import org.axgl.text.AxText;
 
 	public class NewGameState extends AxState {
+		private var veryHard:AxButton;
+		
 		override public function create():void {
 			this.add(new AxText(4, 146, null, "Choose A Difficulty", Ax.viewWidth, "center"));
 			this.add(new AxButton(67, 168, Resource.BUTTON, 107, 24).text("Hard", null, 7, 3).onClick(normal));
-			this.add(new AxButton(186, 168, Resource.BUTTON, 107, 24).text("Very Hard", null, 7, 3).onClick(hard));
+			this.add(veryHard = new AxButton(186, 168, Resource.BUTTON, 107, 24).text("Very Hard", null, 7, 3).onClick(hard));
 			this.add(new AxButton(127, 204, Resource.BUTTON, 107, 24).text("Cancel", null, 7, 3).onClick(back));
+			
+			if (!Registry.difficultyComplete(Difficulty.NORMAL)) {
+				veryHard.color.hex = 0xffff0000;
+			}
+		}
+		
+		override public function update():void {
+			if (!Registry.difficultyComplete(Difficulty.NORMAL) && veryHard.hover()) {
+				veryHard.text("@[ff0000]LOCKED@[]", null, 7, 3);
+			} else {
+				veryHard.text("Very Hard", null, 7, 3);
+			}
+			
+			super.update();
 		}
 		
 		private function normal():void {
@@ -24,6 +40,9 @@ package io.arkeus.antichromatic.title {
 		}
 		
 		private function hard():void {
+			if (!Registry.difficultyComplete(Difficulty.NORMAL)) {
+				return;
+			}
 			start(Difficulty.HARD);
 		}
 			
