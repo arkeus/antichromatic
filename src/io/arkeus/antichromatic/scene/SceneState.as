@@ -10,7 +10,9 @@ package io.arkeus.antichromatic.scene {
 	import org.axgl.Ax;
 	import org.axgl.AxRect;
 	import org.axgl.AxState;
+	import org.axgl.input.AxKey;
 	import org.axgl.plus.message.AxMessage;
+	import org.axgl.text.AxText;
 
 	public class SceneState extends AxState {
 		public var world:World;
@@ -18,6 +20,7 @@ package io.arkeus.antichromatic.scene {
 		
 		private var speed:Number;
 		private var messages:Array;
+		private var complete:Boolean = false;
 		
 		public function SceneState(speed:Number, messages:Array) {
 			this.speed = speed;
@@ -34,6 +37,10 @@ package io.arkeus.antichromatic.scene {
 			addTimer(1, function():void {
 				AxMessage.show(messages, Config.SCENE_MESSAGE_OPTIONS);
 			});
+			
+			var skip:AxText = new AxText(0, Ax.viewHeight - 11, null, "@[ffdddd]Escape@[] To Skip", Ax.viewWidth, "right");
+			skip.noScroll();
+			this.add(skip);
 		}
 		
 		override public function update():void {
@@ -43,10 +50,21 @@ package io.arkeus.antichromatic.scene {
 				camera.velocity.x = speed;
 			}
 			
+			if (Ax.keys.pressed(AxKey.ESCAPE) && !complete) {
+				if (Ax.state == this) {
+					clearTimers();
+					onResume(null);
+				} else {
+					Ax.popState();
+				}
+				complete = true;
+			}
+			
 			super.update();
 		}
 		
 		override public function onResume(sourceState:Class):void {
+			complete = true;
 			Ax.camera.fadeOut(2, 0xff000000, function():void {
 				Ax.switchState(new GameState);
 				Ax.camera.fadeIn(0.5, function():void { Registry.loading = false; });
