@@ -30,7 +30,7 @@ package io.arkeus.antichromatic.game.world.text {
 			addText(function():Boolean { return !Registry.hasItem(Item.SUN_BOOTS); }, 270, 0, new Rectangle(4*12+8, 14*12-9, 22*12), "The @[222222]Sun Boots@[] allow you to double jump within the @[222222]white@[] dimension.");
 			addText(function():Boolean { return !Registry.hasItem(Item.MOON_BOOTS); }, 180, 75, new Rectangle(4*12, 18*12-5, 15*12), "The @[222222]Moon Boots@[] allow you to wall jump within the @[222222]black@[] dimension.");
 			addText(function():Boolean { return !Registry.hasItem(Item.TELEPORT_BADGE); }, 240, 25, new Rectangle(7*12, 10*12-5, 15*12), "The @[222222]Teleport Badge@[] allows you to @[222222]touch a teleporter pad@[] in your dimension, then @[222222]swap dimensions@[] to teleport to the other pad.");
-			addText(null, 0, 0, new Rectangle(), "Young warrior, you may have stolen my armor and infiltrated my fortress, but I have the shared power between the two dimensions protecting me. You'll never harm me!");
+			//addText(null, 0, 0, new Rectangle(), "Young warrior, you may have stolen my armor and infiltrated my fortress, but I have the shared power between the two dimensions protecting me. You'll never harm me!");
 		}
 		
 		private function addText(condition:Function, roomX:uint, roomY:uint, textarea:Rectangle, text:String):void {
