@@ -45,6 +45,7 @@ package io.arkeus.antichromatic.game {
 		public var transitionProperties:TransitionProperties;
 		
 		public var frozen:Boolean = false;
+		public var ticking:Boolean = true;
 		
 		public function GameState() {
 			this.initialX = Registry.initialX;
@@ -107,7 +108,10 @@ package io.arkeus.antichromatic.game {
 			if (Ax.keys.pressed(AxKey.ESCAPE) || Ax.keys.pressed(AxKey.TAB)) {
 				Ax.pushState(new PauseState); 
 			}
-			Registry.time += Ax.adt;
+			
+			if (ticking) {
+				Registry.time += Ax.adt;
+			}
 			
 			super.update();
 			Ax.collide(entities, world, collideWorld);
