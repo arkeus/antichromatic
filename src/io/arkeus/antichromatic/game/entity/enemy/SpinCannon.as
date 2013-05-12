@@ -1,6 +1,5 @@
 package io.arkeus.antichromatic.game.entity.enemy {
 	import io.arkeus.antichromatic.assets.Resource;
-	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
@@ -13,7 +12,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		public function SpinCannon(hue:uint, x:uint, y:uint) {
 			super(hue, x, y, Resource.SPIN_CANNON, 12, 12);
 			
-			show(hue);
+			show(hue == BLACK ? 1 : 0);
 			//addTimer(SHOOT_DELAY, shoot, 0);
 			
 			harmful = false;
