@@ -17,6 +17,7 @@ package io.arkeus.antichromatic.title {
 	import org.axgl.input.AxKey;
 	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.render.AxBlendMode;
+	import org.axgl.util.AxPauseState;
 
 	public class TitleState extends AxState {
 		private var background:AxSprite;
@@ -48,15 +49,17 @@ package io.arkeus.antichromatic.title {
 			this.add(foreground = new AxSprite(0, 0, Resource.TITLE_FOREGROUND));
 			
 			this.add(buttons = new AxGroup);
-			buttons.add(new AxButton(67, 156, Resource.BUTTON, 107, 24).text("New Game", null, 7, 3).onClick(newGame));
-			buttons.add(new AxButton(186, 156, Resource.BUTTON, 107, 24).text("Continue", null, 7, 3).onClick(continueGame));
-			buttons.add(new AxButton(67, 192, Resource.BUTTON, 107, 24).text("Credits", null, 7, 3).onClick(credits));
-			buttons.add(new AxButton(186, 192, Resource.BUTTON, 107, 24).text("Options", null, 7, 3).onClick(options));
+			buttons.add(new AxButton(67, 144, Resource.BUTTON, 107, 24).text("New Game", null, 7, 3).onClick(newGame));
+			buttons.add(new AxButton(186, 144, Resource.BUTTON, 107, 24).text("Continue", null, 7, 3).onClick(continueGame));
+			buttons.add(new AxButton(67, 180, Resource.BUTTON, 107, 24).text("Credits", null, 7, 3).onClick(credits));
+			buttons.add(new AxButton(186, 180, Resource.BUTTON, 107, 24).text("Options", null, 7, 3).onClick(options));
+			buttons.add(new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Best Times", null, 7, 3).onClick(times));
 			
 			addTimer(0.1, emitTile, 0);
 			
 			persistantUpdate = true;
 			Registry.game = null;
+			Ax.camera.reset();
 		}
 		
 		override public function update():void {
@@ -116,6 +119,16 @@ package io.arkeus.antichromatic.title {
 			Ax.mouse.releaseAll();
 		}
 		
+		private function times():void {
+			if (Registry.loading) {
+				return;
+			}
+			// push state with options
+			Ax.pushState(new TimesState);
+			Ax.keys.releaseAll();
+			Ax.mouse.releaseAll();
+		}
+		
 		private function logoColorGrow():void {
 			logoColor.grow(2, 1.05, 1.2, logoColorShrink);
 		}
@@ -139,6 +152,9 @@ package io.arkeus.antichromatic.title {
 		}
 		
 		override public function onPause(sourceState:Class):void {
+			if (sourceState == AxPauseState) {
+				return;
+			}
 			buttons.visible = buttons.active = buttons.exists = false;
 		}
 		
