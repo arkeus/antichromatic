@@ -30,6 +30,11 @@ package io.arkeus.antichromatic.util {
 		public static var roomOffsetY:int = 0;
 		public static var transitionProperties:TransitionProperties;
 		
+		public static var normalDeaths:uint = uint.MAX_VALUE;
+		public static var normalTime:Number = Number.MAX_VALUE;
+		public static var hardDeaths:uint = uint.MAX_VALUE;
+		public static var hardTime:Number = Number.MAX_VALUE;
+		
 		public static var mapData:Object;
 		
 		private static var saveHandler:SaveHandler;
@@ -112,6 +117,14 @@ package io.arkeus.antichromatic.util {
 						Registry.map.setPixel(x, y, World.MAP_KNOWN_COLOR);
 					}
 				}
+			}
+		}
+		
+		public static function difficultyComplete(difficulty:uint):Boolean {
+			if (difficulty == Difficulty.NORMAL) {
+				return normalTime != Number.MAX_VALUE;
+			} else {
+				return hardTime != Number.MAX_VALUE;
 			}
 		}
 	}

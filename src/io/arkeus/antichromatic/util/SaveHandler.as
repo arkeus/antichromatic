@@ -28,8 +28,6 @@ package io.arkeus.antichromatic.util {
 				so.data.transitionProperties = Registry.transitionProperties == null ? null : Registry.transitionProperties.serialize();
 				
 				so.data.mapData = Registry.mapData;
-				
-				so.flush();
 				trace("Successfully saved");
 			} catch (error:Error) {
 				trace("Error saving", error);
@@ -52,7 +50,6 @@ package io.arkeus.antichromatic.util {
 				if (so.data.transitionProperties != null) { Registry.transitionProperties = TransitionProperties.deserialize(so.data.transitionProperties as Array); }
 				
 				if (so.data.mapData != null) { Registry.loadMap(so.data.mapData); }
-				
 				trace("Successfully loaded");
 			} catch (error:Error) {
 				trace("Error loading", error);
@@ -69,6 +66,11 @@ package io.arkeus.antichromatic.util {
 				so.data.musicMuted = musicMuted;
 				so.data.soundMuted = soundMuted;
 				so.data.quality = quality;
+				
+				so.data.normalDeaths = Registry.normalDeaths;
+				so.data.normalTime = Registry.normalTime;
+				so.data.hardDeaths = Registry.hardDeaths;
+				so.data.hardTime = Registry.hardTime;
 			} catch (error:Error) {
 				trace("Error saving globals", error);
 			}
@@ -79,9 +81,23 @@ package io.arkeus.antichromatic.util {
 				if (so.data.musicMuted != null) { Ax.musicMuted = so.data.musicMuted; }
 				if (so.data.soundMuted != null) { Ax.soundMuted = so.data.soundMuted; }
 				if (so.data.quality != null) { Registry.quality = so.data.quality; }
+				if (so.data.normalDeaths != null) { Registry.normalDeaths = so.data.normalDeaths; }
+				if (so.data.normalTime != null) { Registry.normalTime = so.data.normalTime; }
+				if (so.data.hardDeaths != null) { Registry.hardDeaths = so.data.hardDeaths; }
+				if (so.data.hardTime != null) { Registry.hardTime = so.data.hardTime; }
+				
+				checksum(1, 2, "bob");
 			} catch (error:Error) {
 				trace("Error loading globals", error);
 			}
+		}
+		
+		public function checksum(...values):String {
+			for each(var value:String in values) {
+				trace(value);
+				trace(value is String);
+			}
+			return "";
 		}
 	}
 }
