@@ -7,7 +7,6 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	
 	import org.axgl.Ax;
 	import org.axgl.AxSprite;
-	import org.axgl.AxU;
 	import org.axgl.particle.AxParticleSystem;
 
 	public class Spinner extends HueEnemy {
@@ -17,8 +16,8 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		private var turret:AxSprite;
 		private var aim:Number = 0;
 		
-		public function Spinner(x:uint, y:uint) {
-			super(AxU.rand(0, 1), x, y, Resource.SPINNER, 22, 22);
+		public function Spinner(hue:uint, x:uint, y:uint) {
+			super(hue, x, y, Resource.SPINNER, 22, 22);
 			turret = new AxSprite(x, y, Resource.SPINNER, 22, 22);
 			
 			width = height = turret.width = turret.height = 16;
@@ -29,7 +28,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			
 			harmful = true;
 			killable = true;
-			hp = 30;
+			hp = 20;
 			deathSound = "enemy-die";
 		}
 		
