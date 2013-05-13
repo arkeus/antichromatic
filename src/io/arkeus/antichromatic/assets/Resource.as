@@ -9,6 +9,8 @@ package io.arkeus.antichromatic.assets {
 		
 		[Embed(source = "/world/intro.png")] public static const INTRO:Class;
 		[Embed(source = "/world/intro_rooms.png")] public static const INTRO_ROOMS:Class;
+		[Embed(source = "/world/outro.png")] public static const OUTRO:Class;
+		[Embed(source = "/world/outro_rooms.png")] public static const OUTRO_ROOMS:Class;
 		
 		[Embed(source = "/entity/player_white.png")] public static const PLAYER_WHITE:Class;
 		[Embed(source = "/entity/gun_white_right.png")] public static const GUN_WHITE_RIGHT:Class;
@@ -62,6 +64,7 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/misc/map.png")] public static const MAP:Class;
 		[Embed(source = "/misc/map_target.png")] public static const MAP_TARGET:Class;
 		[Embed(source = "/misc/button.png")] public static const BUTTON:Class;
+		[Embed(source = "/misc/score_frame.png")] public static const SCORE_FRAME:Class;
 		
 		[Embed(source = "/misc/title_background.png")] public static const TITLE_BACKGROUND:Class;
 		[Embed(source = "/misc/title_foreground.png")] public static const TITLE_FOREGROUND:Class;
