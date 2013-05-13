@@ -1,7 +1,5 @@
 package io.arkeus.antichromatic.scene {
 	import io.arkeus.antichromatic.assets.Resource;
-	import io.arkeus.antichromatic.assets.Sound;
-	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.world.World;
 	import io.arkeus.antichromatic.game.world.WorldBuilder;
 	import io.arkeus.antichromatic.util.Config;
@@ -20,15 +18,20 @@ package io.arkeus.antichromatic.scene {
 		
 		private var speed:Number;
 		private var messages:Array;
+		private var map:Class;
+		private var rooms:Class;
 		private var complete:Boolean = false;
 		
-		public function SceneState(speed:Number, messages:Array) {
+		public function SceneState(speed:Number, messages:Array, map:Class, rooms:Class) {
 			this.speed = speed;
 			this.messages = messages;
+			this.map = map;
+			this.rooms = rooms;
+			Registry.playMusic(SceneMusic);
 		}
 		
 		override public function create():void {
-			var builder:WorldBuilder = new WorldBuilder(Resource.INTRO, Resource.TILES_BLACK, Resource.INTRO_ROOMS, 0, 0, 0, 0);
+			var builder:WorldBuilder = new WorldBuilder(map, Resource.TILES_BLACK, rooms, 0, 0, 0, 0);
 			this.add(world = builder.build(null));
 			this.add(camera = new SceneCamera(speed));
 			Ax.camera.follow(camera);
@@ -65,12 +68,11 @@ package io.arkeus.antichromatic.scene {
 		
 		override public function onResume(sourceState:Class):void {
 			complete = true;
-			Ax.camera.fadeOut(2, 0xff000000, function():void {
-				Ax.switchState(new GameState);
-				Ax.camera.fadeIn(0.5, function():void { Registry.loading = false; });
-				Ax.keys.releaseAll();
-				Ax.mouse.releaseAll();
-			});
+			onComplete();
+		}
+		
+		protected function onComplete():void {
+			// abstract
 		}
 	}
 }

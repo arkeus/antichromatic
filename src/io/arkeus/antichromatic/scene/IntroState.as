@@ -1,7 +1,22 @@
 package io.arkeus.antichromatic.scene {
+	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.game.GameState;
+	import io.arkeus.antichromatic.util.Registry;
+	
+	import org.axgl.Ax;
+
 	public class IntroState extends SceneState {
 		public function IntroState() {
-			super(20, INTRO_MESSAGES);
+			super(20, INTRO_MESSAGES, Resource.INTRO, Resource.INTRO_ROOMS);
+		}
+		
+		override protected function onComplete():void {
+			Ax.camera.fadeOut(2, 0xff000000, function():void {
+				Ax.switchState(new GameState);
+				Ax.camera.fadeIn(0.5, function():void { Registry.loading = false; });
+				Ax.keys.releaseAll();
+				Ax.mouse.releaseAll();
+			});
 		}
 		
 		private static const INTRO_MESSAGES:Array = [
