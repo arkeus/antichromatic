@@ -1,15 +1,22 @@
 package io.arkeus.antichromatic.util {
 	import flash.net.SharedObject;
+	import flash.utils.ByteArray;
+	
+	import io.arkeus.antichromatic.util.base64.Base64;
 	
 	import org.axgl.Ax;
 
 	public class SaveHandler {
-		private static const SO_NAME:String = "antichromatic";
+		private static const SO_NAME:String = "antichromatic3";
 		
 		private var so:SharedObject;
 		
 		public function SaveHandler() {
 			so = SharedObject.getLocal(SO_NAME);
+		}
+		
+		public function hasSave():Boolean {
+			return so.data.time > 0;
 		}
 		
 		public function save():void {
@@ -28,6 +35,8 @@ package io.arkeus.antichromatic.util {
 				so.data.transitionProperties = Registry.transitionProperties == null ? null : Registry.transitionProperties.serialize();
 				
 				so.data.mapData = Registry.mapData;
+				so.data.localSaveFile = localChecksum;
+				trace("SAVED LOCAL CHECKSUM", localChecksum);
 				trace("Successfully saved");
 			} catch (error:Error) {
 				trace("Error saving", error);
@@ -35,7 +44,7 @@ package io.arkeus.antichromatic.util {
 		}
 		
 		public function load():void {
-			try {
+			try {				
 				Registry.deaths = so.data.deaths;
 				Registry.time = so.data.time;
 				Registry.swaps = so.data.swaps;
@@ -50,6 +59,13 @@ package io.arkeus.antichromatic.util {
 				if (so.data.transitionProperties != null) { Registry.transitionProperties = TransitionProperties.deserialize(so.data.transitionProperties as Array); }
 				
 				if (so.data.mapData != null) { Registry.loadMap(so.data.mapData); }
+				
+				var loadedSaveFile:String = so.data.localSaveFile;
+				if (loadedSaveFile != localChecksum) {
+					Registry.reset();
+					throw new Error("Invalid checksum");
+				}
+				
 				trace("Successfully loaded");
 			} catch (error:Error) {
 				trace("Error loading", error);
@@ -71,13 +87,15 @@ package io.arkeus.antichromatic.util {
 				so.data.normalTime = Registry.normalTime;
 				so.data.hardDeaths = Registry.hardDeaths;
 				so.data.hardTime = Registry.hardTime;
+				
+				so.data.globalSaveFile = globalChecksum;
 			} catch (error:Error) {
 				trace("Error saving globals", error);
 			}
 		}
 		
 		public function loadGlobals():void {
-			try {
+			try {				
 				if (so.data.musicMuted != null) { Ax.musicMuted = so.data.musicMuted; }
 				if (so.data.soundMuted != null) { Ax.soundMuted = so.data.soundMuted; }
 				if (so.data.quality != null) { Registry.quality = so.data.quality; }
@@ -86,18 +104,35 @@ package io.arkeus.antichromatic.util {
 				if (so.data.hardDeaths != null) { Registry.hardDeaths = so.data.hardDeaths; }
 				if (so.data.hardTime != null) { Registry.hardTime = so.data.hardTime; }
 				
-				checksum(1, 2, "bob");
+				var loadedSaveFile:String = so.data.globalSaveFile;
+				if (loadedSaveFile != globalChecksum) {
+					Registry.resetGlobals();
+					throw new Error("Invalid checksum");
+				}
 			} catch (error:Error) {
 				trace("Error loading globals", error);
 			}
 		}
 		
+		private static const DELIMITER:String = "\n";
+		private static const CHARSET:String = "iso-8859-1";
+		
+		public function get localChecksum():String {
+			return checksum(Registry.deaths, Registry.time, Registry.difficulty, Registry.initialX, Registry.initialY);
+		}
+		
+		public function get globalChecksum():String {
+			return checksum(Registry.normalDeaths, Registry.normalTime, Registry.hardDeaths, Registry.hardTime);
+		}
+		
 		public function checksum(...values):String {
+			var cs:Vector.<String> = new <String>[];
 			for each(var value:String in values) {
-				trace(value);
-				trace(value is String);
+				cs.push(value);
 			}
-			return "";
+			var ba:ByteArray = new ByteArray;
+			ba.writeMultiByte(cs.join(DELIMITER), CHARSET);
+			return Base64.encode(ba);
 		}
 	}
 }

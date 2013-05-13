@@ -55,6 +55,17 @@ package io.arkeus.antichromatic.util {
 			mapData = {};
 		}
 		
+		public static function resetGlobals():void {
+			normalDeaths = uint.MAX_VALUE;
+			normalTime = Number.MAX_VALUE;
+			hardDeaths = uint.MAX_VALUE;
+			hardTime = Number.MAX_VALUE;
+		}
+		
+		public static function hasSave():Boolean {
+			return saveHandler.hasSave();
+		}
+		
 		public static function hasItem(item:uint):Boolean {
 			return items[item] == 1;
 		}
