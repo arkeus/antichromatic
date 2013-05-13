@@ -21,6 +21,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			height = 8;
 			offset.x = 4;
 			offset.y = 2;
+			hp = 3;
 			
 			velocity.x = SPEED;
 			deathSound = "enemy-die";
