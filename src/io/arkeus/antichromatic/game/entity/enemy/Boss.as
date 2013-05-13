@@ -3,6 +3,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.entity.Player;
+	import io.arkeus.antichromatic.scene.OutroState;
 	import io.arkeus.antichromatic.title.TitleState;
 	import io.arkeus.antichromatic.util.Config;
 	import io.arkeus.antichromatic.util.Difficulty;
@@ -100,7 +101,6 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			} else {
 				switch (phase) {
 					case 2:
-						destroy();
 						resize(Resource.BOSS_GREEN);
 						spawnCrystal(BLACK, 9 * 12, 28 * 12);
 						AxParticleSystem.emit(Particle.RED, center.x - 6, center.y - 6);
@@ -174,11 +174,11 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			var m:uint = Math.floor(Registry.time / 60);
 			var s:uint = Math.floor(Registry.time % 60);
 			var text:String = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
-			Registry.game.addTimer(4, function():void {
-				AxMessage.show("Antichromatic Complete.\nTotal Time: @[bfa747]" + text + "@[]\nTotal Deaths: @[bfa747]" + Registry.deaths + "@[]\nTotal Color Swaps: @[bfa747]" + Registry.swaps + "@[]\n\nTo be continued...", Config.MESSAGE_OPTIONS);
+			Registry.game.addTimer(2, function():void {
+				//AxMessage.show("Antichromatic Complete.\nTotal Time: @[bfa747]" + text + "@[]\nTotal Deaths: @[bfa747]" + Registry.deaths + "@[]\nTotal Color Swaps: @[bfa747]" + Registry.swaps + "@[]\n\nTo be continued...", Config.MESSAGE_OPTIONS);
 				Registry.game.addTimer(0.5, function():void {
 					Ax.camera.fadeOut(0.5, 0xff000000, function():void {
-						Ax.switchState(new TitleState);
+						Ax.switchState(new OutroState);
 						Ax.camera.fadeIn(0.5);
 					});
 				});
