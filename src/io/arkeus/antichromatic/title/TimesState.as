@@ -47,7 +47,6 @@ package io.arkeus.antichromatic.title {
 		
 		private function get hardTime():String {
 			if (Registry.difficultyComplete(Difficulty.HARD)) {
-				trace("formatting", Registry.hardTime);
 				return Utils.formatTime(Registry.hardTime);
 			}
 			return INCOMPLETE_STRING;
