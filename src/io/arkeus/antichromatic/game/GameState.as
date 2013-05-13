@@ -53,7 +53,11 @@ package io.arkeus.antichromatic.game {
 			this.roomOffsetX = Registry.roomOffsetX;
 			this.roomOffsetY = Registry.roomOffsetY;
 			this.transitionProperties = Registry.transitionProperties;
-			Registry.playMusic(GameplayMusic);
+			if (initialX < 60 && initialY < 60 && initialX > -1 && initialY > -1) {
+				Registry.playMusic(BossMusic);
+			} else {
+				Registry.playMusic(GameplayMusic);
+			}
 		}
 
 		override public function create():void {
