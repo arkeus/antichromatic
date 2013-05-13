@@ -238,8 +238,12 @@ package io.arkeus.antichromatic.game.world {
 					entities.add(new Snail(Entity.BLACK, px, py));
 					break;
 				}
-				case SPINNER:  {
-					entities.add(new Spinner(px, py));
+				case SPINNER_WHITE:  {
+					entities.add(new Spinner(Entity.WHITE, px, py));
+					break;
+				}
+				case SPINNER_BLACK:  {
+					entities.add(new Spinner(Entity.BLACK, px, py));
 					break;
 				}
 				case WHITE_SPIN_CANNON:  {
@@ -421,7 +425,8 @@ package io.arkeus.antichromatic.game.world {
 		private static const WHITE_SNAIL:uint = 0xa0c4ff;
 		private static const BLACK_SNAIL:uint = 0x002a6f;
 		
-		private static const SPINNER:uint = 0xdb286b;
+		private static const SPINNER_WHITE:uint = 0xdb286b;
+		private static const SPINNER_BLACK:uint = 0x960038;
 		
 		private static const WHITE_SPIN_CANNON:uint = 0xffd482;
 		private static const BLACK_SPIN_CANNON:uint = 0x8f5e00;
