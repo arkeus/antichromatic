@@ -107,7 +107,7 @@ package io.arkeus.antichromatic.game.entity {
 			gun.draw();
 		}
 		
-		private function handleInput():void {
+		private function handleInput():void {			
 			if (inputSinceClutch || (touching & DOWN)) {
 				clutching -= Ax.dt;
 			}
@@ -119,7 +119,7 @@ package io.arkeus.antichromatic.game.entity {
 			}
 			
 			justSwapped = false;
-			if (Ax.keys.pressed(AxKey.SPACE)) {
+			if (Ax.keys.pressed(AxKey.SPACE) && !invincible) {
 				toggleColor();
 				Sound.play(hue == WHITE ? "white" : "black");
 				Registry.swaps++;
