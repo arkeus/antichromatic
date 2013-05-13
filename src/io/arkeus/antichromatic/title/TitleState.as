@@ -48,12 +48,17 @@ package io.arkeus.antichromatic.title {
 			
 			this.add(foreground = new AxSprite(0, 0, Resource.TITLE_FOREGROUND));
 			
+			var continueButton:AxButton;
 			this.add(buttons = new AxGroup);
 			buttons.add(new AxButton(67, 144, Resource.BUTTON, 107, 24).text("New Game", null, 7, 3).onClick(newGame));
-			buttons.add(new AxButton(186, 144, Resource.BUTTON, 107, 24).text("Continue", null, 7, 3).onClick(continueGame));
+			buttons.add(continueButton = new AxButton(186, 144, Resource.BUTTON, 107, 24).text("Continue", null, 7, 3).onClick(Registry.hasSave() ? continueGame : null));
 			buttons.add(new AxButton(67, 180, Resource.BUTTON, 107, 24).text("Credits", null, 7, 3).onClick(credits));
 			buttons.add(new AxButton(186, 180, Resource.BUTTON, 107, 24).text("Options", null, 7, 3).onClick(options));
 			buttons.add(new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Best Times", null, 7, 3).onClick(times));
+			
+			if (!Registry.hasSave()) {
+				continueButton.color.hex = 0xffff0000;
+			}
 			
 			addTimer(0.1, emitTile, 0);
 			
