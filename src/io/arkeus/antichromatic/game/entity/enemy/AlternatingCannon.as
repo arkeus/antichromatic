@@ -16,7 +16,6 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			super(COLOR, x, y, Resource.CANNON, 12, 12);
 			this.dir = dir;
 			this.bulletHue = BLACK;
-			trace("test");
 			
 			var frame:uint = 0;
 			switch (dir) {
