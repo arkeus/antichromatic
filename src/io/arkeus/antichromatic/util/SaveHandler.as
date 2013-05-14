@@ -7,7 +7,7 @@ package io.arkeus.antichromatic.util {
 	import org.axgl.Ax;
 
 	public class SaveHandler {
-		private static const SO_NAME:String = "antichromatic3";
+		private static const SO_NAME:String = "antichromatic";
 		
 		private var so:SharedObject;
 		

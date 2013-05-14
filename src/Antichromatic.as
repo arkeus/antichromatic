@@ -2,8 +2,6 @@ package {
 	import io.arkeus.antichromatic.title.InitializationState;
 	
 	import org.axgl.Ax;
-	
-	[SWF(width = "720", height = "600", backgroundColor = "#777777")]
 
 	public class Antichromatic extends Ax {
 		public function Antichromatic() {
