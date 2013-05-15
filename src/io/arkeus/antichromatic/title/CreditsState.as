@@ -1,5 +1,6 @@
 package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.util.Analytics;
 	
 	import org.axgl.Ax;
 	import org.axgl.AxButton;
@@ -14,6 +15,8 @@ package io.arkeus.antichromatic.title {
 			noScroll();
 			this.add(backButton = new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
 			this.add(credits = new AxSprite(0, 0, Resource.CREDITS));
+			
+			Analytics.view("credits");
 		}
 		
 		private function back():void {

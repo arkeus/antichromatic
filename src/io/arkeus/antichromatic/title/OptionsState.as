@@ -1,5 +1,6 @@
 package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Options;
 	
 	import org.axgl.Ax;
@@ -23,6 +24,8 @@ package io.arkeus.antichromatic.title {
 			Options.updateMusicButton(music);
 			Options.updateSoundButton(sound);
 			Options.updateQualityButton(quality);
+			
+			Analytics.view("options");
 		}
 
 		private function toggleMusic():void {
@@ -41,7 +44,6 @@ package io.arkeus.antichromatic.title {
 			Ax.popState();
 			Ax.keys.releaseAll();
 			Ax.mouse.releaseAll();
-			trace("POPPED");
 		}
 	}
 }

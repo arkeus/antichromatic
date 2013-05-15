@@ -67,7 +67,6 @@ package io.arkeus.antichromatic.game.world {
 		private function discoverRoom():Rectangle {
 			var roomPixels:BitmapData = (new rooms as Bitmap).bitmapData;
 			var rx:int = roomX + roomOffsetX, ry:int = roomY + roomOffsetY;
-			//trace("Discovering room...", rx, ry);
 			var limit:uint = 0;
 			while (roomPixels.getPixel(rx, ry) != WALL) {
 				limit++;
@@ -102,7 +101,6 @@ package io.arkeus.antichromatic.game.world {
 				}
 				rw++;
 			}
-			//trace("Discovered room:", rx, ry, rw, rh, "Limit:", limit);
 			return new Rectangle(rx, ry, rw + 1, rh + 1);
 		}
 		

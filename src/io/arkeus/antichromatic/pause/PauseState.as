@@ -3,6 +3,7 @@ package io.arkeus.antichromatic.pause {
 	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.world.Tile;
 	import io.arkeus.antichromatic.title.TitleState;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Item;
 	import io.arkeus.antichromatic.util.Options;
 	import io.arkeus.antichromatic.util.Registry;
@@ -56,6 +57,7 @@ package io.arkeus.antichromatic.pause {
 			Options.updateQualityButton(quality);
 			
 			Ax.keys.releaseAll();
+			Analytics.view("pause");
 		}
 		
 		private function addItemName(item:int, x:uint, y:uint, index:uint):void {

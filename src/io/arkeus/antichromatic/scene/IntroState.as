@@ -1,6 +1,7 @@
 package io.arkeus.antichromatic.scene {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.game.GameState;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
@@ -8,6 +9,7 @@ package io.arkeus.antichromatic.scene {
 	public class IntroState extends SceneState {
 		public function IntroState() {
 			super(20, INTRO_MESSAGES, Resource.INTRO, Resource.INTRO_ROOMS);
+			Analytics.view("intro");
 		}
 		
 		override protected function onComplete():void {
@@ -17,6 +19,10 @@ package io.arkeus.antichromatic.scene {
 				Ax.keys.releaseAll();
 				Ax.mouse.releaseAll();
 			});
+		}
+		
+		override protected function onSkip():void {
+			Analytics.view("skip-intro");
 		}
 		
 		private static const INTRO_MESSAGES:Array = [

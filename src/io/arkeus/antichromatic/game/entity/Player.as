@@ -3,6 +3,7 @@ package io.arkeus.antichromatic.game.entity {
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.world.Tile;
 	import io.arkeus.antichromatic.game.world.World;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Config;
 	import io.arkeus.antichromatic.util.Item;
 	import io.arkeus.antichromatic.util.Registry;
@@ -60,7 +61,6 @@ package io.arkeus.antichromatic.game.entity {
 			hue = World.INITIAL_COLOR;
 			gun = new Gun(this.x, this.y);
 			facing = tp == null ? RIGHT : tp.facing;
-			trace("beforefacing", facing, tp);
 			
 			if (tp != null) {
 				velocity.x = tp.velocity.x;
@@ -349,6 +349,8 @@ package io.arkeus.antichromatic.game.entity {
 				return;
 			}
 			
+			Analytics.event("game", "death");
+			Analytics.event("game", "death-room-" + Registry.game.world.room.x + "-" + Registry.game.world.room.y);
 			Registry.deaths++;
 			Sound.play("player-die");
 			freeze();

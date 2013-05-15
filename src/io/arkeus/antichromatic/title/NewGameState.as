@@ -3,6 +3,7 @@ package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.scene.IntroState;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.Registry;
 	
@@ -23,6 +24,8 @@ package io.arkeus.antichromatic.title {
 			if (!Registry.difficultyComplete(Difficulty.NORMAL)) {
 				veryHard.color.hex = 0xffff0000;
 			}
+			
+			Analytics.view("new-game");
 		}
 		
 		override public function update():void {
@@ -47,6 +50,7 @@ package io.arkeus.antichromatic.title {
 		}
 			
 		private function start(difficulty:uint):void {
+			Analytics.view("new-game-start");
 			Ax.camera.fadeOut(0.5, 0xff000000, function():void {
 				Registry.erase();
 				Registry.difficulty = difficulty;

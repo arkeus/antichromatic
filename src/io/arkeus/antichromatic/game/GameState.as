@@ -9,6 +9,7 @@ package io.arkeus.antichromatic.game {
 	import io.arkeus.antichromatic.game.world.WorldBuilder;
 	import io.arkeus.antichromatic.game.world.text.WallTextBuilder;
 	import io.arkeus.antichromatic.pause.PauseState;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Config;
 	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.HUD;
@@ -106,6 +107,8 @@ package io.arkeus.antichromatic.game {
 			Registry.game = this;
 			Registry.player = player;
 			Ax.dt = 0;
+			
+			Analytics.view("game");
 		}
 
 		override public function update():void {

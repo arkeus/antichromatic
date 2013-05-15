@@ -28,7 +28,6 @@ package io.arkeus.antichromatic.util {
 			tp.upwards = data[3];
 			tp.adjustedUpwards = data[4];
 			tp.facing = data[5];
-			trace("load", data);
 			return tp;
 		}
 	}

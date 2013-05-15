@@ -1,6 +1,7 @@
 package io.arkeus.antichromatic.scene {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.title.TitleState;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
@@ -13,6 +14,7 @@ package io.arkeus.antichromatic.scene {
 		
 		public function OutroState() {
 			super(20, MESSAGES, Resource.OUTRO, Resource.OUTRO_ROOMS);
+			Analytics.view("outro");
 		}
 		
 		override protected function onComplete():void {
@@ -27,6 +29,10 @@ package io.arkeus.antichromatic.scene {
 					Ax.mouse.releaseAll();
 				});
 			}
+		}
+		
+		override protected function onSkip():void {
+			Analytics.view("skip-outro");
 		}
 		
 		private static const MESSAGES:Array = [

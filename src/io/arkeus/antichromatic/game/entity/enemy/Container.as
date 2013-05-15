@@ -3,13 +3,11 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.world.Tile;
-	import io.arkeus.antichromatic.util.Config;
-	import io.arkeus.antichromatic.util.Item;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.AxSprite;
 	import org.axgl.particle.AxParticleSystem;
-	import org.axgl.plus.message.AxMessage;
 
 	public class Container extends HueEnemy {
 		private var itemId:uint;
@@ -43,6 +41,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 				Registry.initialY = Registry.game.initialY = y / Tile.SIZE + Registry.game.world.room.y + 1 - 17 / Tile.SIZE;
 				destroy();
 				Sound.play("collect");
+				Analytics.event("item", itemId.toString());
 				//AxMessage.show(Item.MESSAGES[itemId], Config.MESSAGE_OPTIONS);
 			}
 			

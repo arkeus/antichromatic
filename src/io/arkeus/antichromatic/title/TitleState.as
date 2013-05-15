@@ -6,6 +6,7 @@ package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.game.world.Tile;
 	import io.arkeus.antichromatic.pause.PauseState;
 	import io.arkeus.antichromatic.scene.IntroState;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.Ax;
@@ -65,6 +66,7 @@ package io.arkeus.antichromatic.title {
 			persistantUpdate = true;
 			Registry.game = null;
 			Ax.camera.reset();
+			Analytics.view("title");
 		}
 		
 		override public function update():void {
@@ -93,6 +95,7 @@ package io.arkeus.antichromatic.title {
 				return;
 			}
 			
+			Analytics.view("continue");
 			Ax.camera.fadeOut(0.5, 0xff000000, function():void {
 				Registry.load();
 				Sound.play("start");

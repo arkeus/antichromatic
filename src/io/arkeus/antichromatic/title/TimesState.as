@@ -1,5 +1,6 @@
 package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.Registry;
 	import io.arkeus.antichromatic.util.Utils;
@@ -29,6 +30,8 @@ package io.arkeus.antichromatic.title {
 			
 			this.add(new AxText(63, 193, null, "Fewest @[ff9a9a]Very Hard Mode@[] Deaths"));
 			this.add(new AxText(63, 193, null, "@[ff9a9a]" + hardDeaths + "@[]", 240, "right"));
+			
+			Analytics.view("times");
 		}
 		
 		private function get normalTime():String {

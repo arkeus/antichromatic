@@ -1,5 +1,6 @@
 package io.arkeus.antichromatic.scene {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Registry;
 	import io.arkeus.antichromatic.util.Utils;
 	
@@ -29,6 +30,8 @@ package io.arkeus.antichromatic.scene {
 			Ax.mouse.releaseAll();
 			this.add(new AxButton(Ax.viewWidth / 2 - 107 / 2, 181, Resource.BUTTON, 107, 24).text("Continue", null, 7, 3).onClick(back));
 			update();
+			
+			Analytics.view("score");
 		}
 		
 		private function back():void {

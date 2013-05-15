@@ -74,5 +74,9 @@ package io.arkeus.antichromatic.scene {
 		protected function onComplete():void {
 			// abstract
 		}
+		
+		protected function onSkip():void {
+			// abstract
+		}
 	}
 }
