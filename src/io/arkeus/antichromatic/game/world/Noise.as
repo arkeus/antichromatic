@@ -1,5 +1,6 @@
 package io.arkeus.antichromatic.game.world {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.util.Quality;
 	import io.arkeus.antichromatic.util.Registry;
 	
 	import org.axgl.AxSprite;
@@ -18,7 +19,7 @@ package io.arkeus.antichromatic.game.world {
 		}
 		
 		override public function draw():void {
-			if (Registry.quality == 0) {
+			if (Registry.quality != Quality.HIGH) {
 				return;
 			}
 			super.draw();

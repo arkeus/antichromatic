@@ -1,6 +1,7 @@
 package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.GameState;
+	import io.arkeus.antichromatic.splash.SplashState;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Config;
 	import io.arkeus.antichromatic.util.Registry;
@@ -14,7 +15,7 @@ package io.arkeus.antichromatic.title {
 			Sound.initialize();
 			Analytics.initialize();
 			
-			Ax.switchState(Config.TITLE_ENABLED ? new TitleState : new GameState);
+			Ax.switchState(Config.TITLE_ENABLED ? (Config.SPLASH_ENABLED ? new SplashState : new TitleState) : new GameState);
 		}
 	}
 }

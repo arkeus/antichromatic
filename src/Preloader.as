@@ -15,7 +15,7 @@ package {
 	public class Preloader extends MovieClip {
 		[Embed(source="/misc/loading.png")] protected var LOADING:Class;
 		
-		private static const SITE_LOCKED:Boolean = true;
+		private static const SITE_LOCKED:Boolean = false;
 		
 		private var allowedURLs:Array = [
 			"Users/Lee",
@@ -27,6 +27,10 @@ package {
 			"fgl.com",
 			"notdoppler.com",
 			"ungrounded.net",
+			"itch.io",
+			"googleapis.com/itchio",
+			"vigil.io",
+			"vigil-paste",
 		];
 		
 		public function Preloader() {

@@ -5,6 +5,7 @@ package io.arkeus.antichromatic.util {
 	public class Options {
 		public static const GREEN:String = "9eff00";
 		public static const RED:String = "ff0000";
+		public static const YELLOW:String = "ffcc00";
 		
 		public static function toggleMusic(button:AxButton):void {
 			if (Ax.musicMuted) {
@@ -29,10 +30,12 @@ package io.arkeus.antichromatic.util {
 		}
 		
 		public static function toggleQuality(button:AxButton):void {
-			if (Registry.quality == 0) {
-				Registry.quality = 1;
+			if (Registry.quality == Quality.HIGH) {
+				Registry.quality = Quality.MID;
+			} else if (Registry.quality == Quality.MID) {
+				Registry.quality = Quality.LOW;
 			} else {
-				Registry.quality = 0;
+				Registry.quality = Quality.HIGH;
 			}
 			updateQualityButton(button);
 			Registry.saveGlobals();
@@ -47,7 +50,7 @@ package io.arkeus.antichromatic.util {
 		}
 		
 		public static function updateQualityButton(button:AxButton):void {
-			button.text((Registry.quality == 0 ? redText("Low") : greenText("High")) + " Quality", null, 7, 3);
+			button.text((Registry.quality == Quality.LOW ? redText("Low") : (Registry.quality == Quality.MID ? yellowText("Medium") : greenText("High"))) + " Quality", null, 7, 3);
 		}
 		
 		private static function greenText(text:String):String {
@@ -56,6 +59,10 @@ package io.arkeus.antichromatic.util {
 		
 		private static function redText(text:String):String {
 			return colorText(text, RED);
+		}
+		
+		private static function yellowText(text:String):String {
+			return colorText(text, YELLOW);
 		}
 		
 		private static function colorText(text:String, color:String):String {

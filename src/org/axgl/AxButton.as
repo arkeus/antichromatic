@@ -1,4 +1,6 @@
 package org.axgl {
+	import io.arkeus.antichromatic.assets.Sound;
+	
 	import org.axgl.resource.AxResource;
 	import org.axgl.text.AxFont;
 	import org.axgl.text.AxText;
@@ -91,6 +93,7 @@ package org.axgl {
 		override public function update():void {
 			if (released()) {
 				if (callback != null && onRelease) {
+					Sound.play("select");
 					callback();
 				}
 				labelOffset = 0;
@@ -106,6 +109,9 @@ package org.axgl {
 				labelOffset = 1;
 				label.setColor(.113, .113, .113);
 			} else if (hover()) {
+				if (animation != null && animation.name != "hover") {
+					Sound.play("hover");
+				}
 				animate("hover");
 				labelOffset = 0;
 				label.setColor(.113, .113, .113);

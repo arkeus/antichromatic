@@ -10,7 +10,7 @@ package {
 		
 		override public function create():void {
 			Ax.unfocusedFramerate = 60;
-			//debuggerEnabled = true;
+			debuggerEnabled = true;
 			//debugger.active = true;
 		}
 	}

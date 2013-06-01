@@ -112,7 +112,7 @@ package io.arkeus.antichromatic.game {
 		}
 
 		override public function update():void {
-			if (Ax.keys.pressed(AxKey.ESCAPE) || Ax.keys.pressed(AxKey.TAB)) {
+			if (!frozen && (Ax.keys.pressed(AxKey.ESCAPE) || Ax.keys.pressed(AxKey.TAB))) {
 				Ax.pushState(new PauseState); 
 			}
 			

@@ -35,6 +35,8 @@ package io.arkeus.antichromatic.util {
 		public static var hardDeaths:uint = uint.MAX_VALUE;
 		public static var hardTime:Number = Number.MAX_VALUE;
 		
+		public static var controls:uint = Controls.WASD1;
+		
 		public static var mapData:Object;
 		
 		private static var saveHandler:SaveHandler;
@@ -82,7 +84,7 @@ package io.arkeus.antichromatic.util {
 		
 		public static var music:AxSound;
 		public static var musicClass:Class;
-		public static var quality:uint = 1;
+		public static var quality:uint = Quality.HIGH;
 		
 		public static function playMusic(m:Class):void {
 			if (m == musicClass || !Config.SOUND_ENABLED) {
@@ -110,7 +112,7 @@ package io.arkeus.antichromatic.util {
 		}
 		
 		public static function saveGlobals():void {
-			saveHandler.saveGlobals(Ax.musicMuted, Ax.soundMuted, quality);
+			saveHandler.saveGlobals(Ax.musicMuted, Ax.soundMuted, quality, controls);
 		}
 		
 		public static function loadMap(mapData:Object):void {

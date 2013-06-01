@@ -71,5 +71,8 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/misc/title_logo.png")] public static const TITLE_LOGO:Class;
 		[Embed(source = "/misc/title_logo_color.png")] public static const TITLE_LOGO_COLOR:Class;
 		[Embed(source = "/misc/credits.png")] public static const CREDITS:Class;
+		[Embed(source = "/misc/splash_background.png")] public static const SPLASH_BACKGROUND:Class;
+		[Embed(source = "/misc/splash_blog.png")] public static const SPLASH_BLOG:Class;
+		[Embed(source = "/misc/splash_axel.png")] public static const SPLASH_AXEL:Class;
 	}
 }

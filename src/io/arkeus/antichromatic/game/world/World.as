@@ -3,12 +3,15 @@ package io.arkeus.antichromatic.game.world {
 	
 	import io.arkeus.antichromatic.assets.Particle;
 	import io.arkeus.antichromatic.assets.Sound;
+	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.entity.Bullet;
 	import io.arkeus.antichromatic.game.entity.Entity;
 	import io.arkeus.antichromatic.game.entity.Player;
 	import io.arkeus.antichromatic.util.Item;
+	import io.arkeus.antichromatic.util.Quality;
 	import io.arkeus.antichromatic.util.Registry;
 	
+	import org.axgl.Ax;
 	import org.axgl.AxEntity;
 	import org.axgl.AxU;
 	import org.axgl.particle.AxParticleSystem;
@@ -37,7 +40,7 @@ package io.arkeus.antichromatic.game.world {
 		}
 
 		private function swapBackgroundTile(count:uint):void {
-			if (Registry.quality == 0) {
+			if (Registry.quality != Quality.HIGH) {
 				return;
 			}
 			for (var i:uint = 0; i < count; i++) {
@@ -122,6 +125,10 @@ package io.arkeus.antichromatic.game.world {
 		public static const MAP_UNKNOWN_COLOR:uint = 0x282828;
 		public static const MAP_KNOWN_COLOR:uint = 0xaeaeae;
 		public function updateMap():void {
+			if (!(Ax.state is GameState)) {
+				return;
+			}
+			
 			var mx:uint = room.x / 30 * 9 + 1;
 			var my:uint = room.y / 25 * 9 + 1;
 			var mw:uint = room.width / 30 * 8 + Math.floor(room.width / 31);

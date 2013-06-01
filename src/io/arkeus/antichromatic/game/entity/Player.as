@@ -5,6 +5,7 @@ package io.arkeus.antichromatic.game.entity {
 	import io.arkeus.antichromatic.game.world.World;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Config;
+	import io.arkeus.antichromatic.util.Controls;
 	import io.arkeus.antichromatic.util.Item;
 	import io.arkeus.antichromatic.util.Registry;
 	import io.arkeus.antichromatic.util.TransitionProperties;
@@ -107,7 +108,35 @@ package io.arkeus.antichromatic.game.entity {
 			gun.draw();
 		}
 		
-		private function handleInput():void {			
+		private function handleInput():void {
+			var left:Boolean, right:Boolean, jump:Boolean, swap:Boolean;
+			switch (Registry.controls) {
+				case Controls.WASD1:
+					left = Ax.keys.held(AxKey.A) || Ax.keys.held(AxKey.Q);
+					right = Ax.keys.held(AxKey.D);
+					jump = Ax.keys.pressed(AxKey.W) || Ax.keys.pressed(AxKey.Z);
+					swap = Ax.keys.pressed(AxKey.SPACE);
+				break;
+				case Controls.WASD2:
+					left = Ax.keys.held(AxKey.A) || Ax.keys.held(AxKey.Q);
+					right = Ax.keys.held(AxKey.D);
+					jump = Ax.keys.pressed(AxKey.SPACE);
+					swap = Ax.keys.pressed(AxKey.W) || Ax.keys.pressed(AxKey.Z) || Ax.keys.pressed(AxKey.S);
+				break;
+				case Controls.ARROWS1:
+					left = Ax.keys.held(AxKey.LEFT);
+					right = Ax.keys.held(AxKey.RIGHT);
+					jump = Ax.keys.pressed(AxKey.SPACE);
+					swap = Ax.keys.pressed(AxKey.UP) || Ax.keys.pressed(AxKey.DOWN);
+				break;
+				case Controls.ARROWS2:
+					left = Ax.keys.held(AxKey.LEFT);
+					right = Ax.keys.held(AxKey.RIGHT);
+					jump = Ax.keys.pressed(AxKey.UP);
+					swap = Ax.keys.pressed(AxKey.SPACE);
+				break;
+			}
+			
 			if (inputSinceClutch || (touching & DOWN)) {
 				clutching -= Ax.dt;
 			}
@@ -119,7 +148,7 @@ package io.arkeus.antichromatic.game.entity {
 			}
 			
 			justSwapped = false;
-			if (Ax.keys.pressed(AxKey.SPACE) && !invincible) {
+			if (swap && !invincible) {
 				toggleColor();
 				Sound.play(hue == WHITE ? "white" : "black");
 				Registry.swaps++;
@@ -130,10 +159,10 @@ package io.arkeus.antichromatic.game.entity {
 			}
 			
 			if (wallJumping <= 0) {
-				if (Ax.keys.held(AxKey.A) || Ax.keys.held(AxKey.Q)) {
+				if (left) {
 					velocity.x = -SPEED;
 					inputSinceClutch = true;
-				} else if (Ax.keys.held(AxKey.D)) {
+				} else if (right) {
 					velocity.x = SPEED;
 					inputSinceClutch = true;
 				} else {
@@ -169,7 +198,7 @@ package io.arkeus.antichromatic.game.entity {
 				jumps = 1;
 			}
 			
-			if (Ax.keys.pressed(AxKey.W) || Ax.keys.pressed(AxKey.Z)) {
+			if (jump) {
 				if (Config.INFINITE_JUMPS || (jumps < (hue == WHITE && Registry.hasItem(Item.SUN_BOOTS) ? 2 : 1))) {
 					jumps++;
 					velocity.y = -JUMP_SPEED;
@@ -214,11 +243,39 @@ package io.arkeus.antichromatic.game.entity {
 		private function handleShooting():void {
 			gunRecharge -= Ax.dt;
 			
-			var m:Boolean = Ax.mouse.held(AxMouseButton.LEFT);
-			var l:Boolean = Ax.keys.held(AxKey.LEFT);
-			var r:Boolean = Ax.keys.held(AxKey.RIGHT);
-			var u:Boolean = Ax.keys.held(AxKey.UP);
-			var d:Boolean = Ax.keys.held(AxKey.DOWN);
+			var m:Boolean, l:Boolean, r:Boolean, u:Boolean, d:Boolean;
+			
+			switch (Registry.controls) {
+				case Controls.WASD1:
+					m = Ax.mouse.held(AxMouseButton.LEFT);
+					l = Ax.keys.held(AxKey.LEFT);
+					r = Ax.keys.held(AxKey.RIGHT);
+					u = Ax.keys.held(AxKey.UP);
+					d = Ax.keys.held(AxKey.DOWN);
+					break;
+				case Controls.WASD2:
+					m = Ax.mouse.held(AxMouseButton.LEFT);
+					l = Ax.keys.held(AxKey.LEFT);
+					r = Ax.keys.held(AxKey.RIGHT);
+					u = Ax.keys.held(AxKey.UP);
+					d = Ax.keys.held(AxKey.DOWN);
+					break;
+				case Controls.ARROWS1:
+					m = Ax.mouse.held(AxMouseButton.LEFT);
+					l = Ax.keys.held(AxKey.A) || Ax.keys.held(AxKey.Q);
+					r = Ax.keys.held(AxKey.D);
+					u = Ax.keys.held(AxKey.W) || Ax.keys.held(AxKey.Z);
+					d = Ax.keys.held(AxKey.S);
+					break;
+				case Controls.ARROWS2:
+					m = Ax.mouse.held(AxMouseButton.LEFT);
+					l = Ax.keys.held(AxKey.A) || Ax.keys.held(AxKey.Q);
+					r = Ax.keys.held(AxKey.D);
+					u = Ax.keys.held(AxKey.W) || Ax.keys.held(AxKey.Z);
+					d = Ax.keys.held(AxKey.S);
+					break;
+			}
+			
 			var s:Boolean = m || l || r || u || d;
 			
 			if (!s) {
