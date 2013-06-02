@@ -67,6 +67,7 @@ package io.arkeus.antichromatic.title {
 			Registry.game = null;
 			Ax.camera.reset();
 			Analytics.view("title");
+			Registry.sendAPI();
 		}
 		
 		override public function update():void {

@@ -15,6 +15,7 @@ package io.arkeus.antichromatic.scene {
 		public function OutroState() {
 			super(20, MESSAGES, Resource.OUTRO, Resource.OUTRO_ROOMS);
 			Analytics.view("outro");
+			Registry.sendAPI();
 		}
 		
 		override protected function onComplete():void {

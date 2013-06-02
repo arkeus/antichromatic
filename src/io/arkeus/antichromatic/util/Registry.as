@@ -2,6 +2,7 @@ package io.arkeus.antichromatic.util {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	
+	import io.arkeus.antichromatic.api.API;
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.entity.Player;
@@ -42,6 +43,7 @@ package io.arkeus.antichromatic.util {
 		private static var saveHandler:SaveHandler;
 		
 		public static var loading:Boolean = false;
+		public static var api:API;
 		
 		public static function reset():void {
 			deaths = time = swaps = 0;
@@ -138,6 +140,12 @@ package io.arkeus.antichromatic.util {
 				return normalTime != Number.MAX_VALUE;
 			} else {
 				return hardTime != Number.MAX_VALUE;
+			}
+		}
+		
+		public static function sendAPI():void {
+			if (api != null) {
+				api.sendAll();
 			}
 		}
 	}
