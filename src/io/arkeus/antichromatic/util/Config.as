@@ -15,7 +15,7 @@ package io.arkeus.antichromatic.util {
 		public static const KONGREGATE:String = "Kongregate";
 		public static const NEWGROUNDS:String = "Newgrounds";
 		
-		public static const RELEASE:String = NEWGROUNDS;
+		public static const RELEASE:String = KONGREGATE;
 		public static const VERSION:String = "1.0";
 		
 		public static const MESSAGE_OPTIONS:Object = {

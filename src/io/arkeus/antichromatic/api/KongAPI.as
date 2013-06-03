@@ -6,6 +6,9 @@ package io.arkeus.antichromatic.api {
 	import flash.net.URLRequest;
 	import flash.system.Security;
 	
+	import io.arkeus.antichromatic.util.Difficulty;
+	import io.arkeus.antichromatic.util.Registry;
+	
 	import org.axgl.Ax;
 
 	public class KongAPI extends API {
@@ -34,7 +37,16 @@ package io.arkeus.antichromatic.api {
 		}
 		
 		override public function sendAll():void {
-			send("Bob", 1);
+			if (Registry.difficultyComplete(Difficulty.NORMAL)) {
+				send("HardModeCompleted", 1);
+				send("HardModeDeaths", Registry.normalDeaths);
+				send("HardModeTime", Math.floor(Registry.normalTime * 1000));
+			}
+			if (Registry.difficultyComplete(Difficulty.HARD)) {
+				send("VeryHardModeCompleted", 1);
+				send("VeryHardModeDeaths", Registry.hardDeaths);
+				send("VeryHardModeTime", Math.floor(Registry.hardTime * 1000));
+			}
 		}
 		
 		private function loadComplete(event:Event):void {
