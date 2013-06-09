@@ -74,5 +74,11 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/misc/splash_background.png")] public static const SPLASH_BACKGROUND:Class;
 		[Embed(source = "/misc/splash_blog.png")] public static const SPLASH_BLOG:Class;
 		[Embed(source = "/misc/splash_axel.png")] public static const SPLASH_AXEL:Class;
+		
+		// Sponsor
+		[Embed(source = "/sponsor/AddictingGamesLogo.png")] public static const ADDICTING_GAMES_LOGO:Class;
+		[Embed(source = "/sponsor/ArmorGamesLogo.png")] public static const ARMOR_GAMES_LOGO:Class;
+		[Embed(source = "/sponsor/ag_more.png")] public static const ARMOR_GAMES_MORE:Class;
+		[Embed(source = "/sponsor/ag_like.png")] public static const ARMOR_GAMES_LIKE:Class;
 	}
 }
