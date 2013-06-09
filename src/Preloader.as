@@ -10,13 +10,14 @@ package {
 	import flash.text.TextFormatAlign;
 	import flash.utils.getDefinitionByName;
 	
+	import io.arkeus.antichromatic.util.Release;
+	
 	[SWF(width = "720", height = "600", backgroundColor = "#ffffff")]
 
 	public class Preloader extends MovieClip {
 		[Embed(source="/misc/loading.png")] protected var LOADING:Class;
 		
-		private static const SITE_LOCKED:Boolean = false;
-		
+		private var siteLocked:Boolean = false;
 		private var allowedURLs:Array = [
 			"Users/Lee",
 			"axgl.org",
@@ -37,6 +38,8 @@ package {
 			stop();
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
+			setSiteLock();
+			
 			var allowed:Boolean = false;
 			for each(var url:String in allowedURLs) {
 				if (root.loaderInfo.url.indexOf(url) >= 0) {
@@ -44,12 +47,28 @@ package {
 				}
 			}
 			
-			if (!allowed && SITE_LOCKED) {
+			if (!allowed && siteLocked) {
 				navigateToURL(new URLRequest("http://arkeus.io"), "_self");
 				throw new Error("Invalid");
 			}
 			
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+		}
+		
+		private function setSiteLock():void {
+			if (Release.NAME == Release.ADDICTING_GAMES) {
+				if (!addictingGamesSiteLock()) {
+					//throw new Error("Invalid");
+				}
+			} else if (Release.NAME == Release.ARMOR_GAMES) {
+				siteLocked = true;
+				allowedURLs = ["armorgames.com", "vigil-paste", "axgl.org", "Users/Lee"];
+			}
+		}
+
+		private function addictingGamesSiteLock():Boolean {
+			var siteLock:RegExp = /^(http|https):\/\/([-a-zA-Z0-9\.])+\.(shockwave|addictinggames|mtvi)\.com(\/|$)/;
+			return (siteLock.test(root.loaderInfo.url));
 		}
 		
 		private var loading:Bitmap, percent:TextField;
