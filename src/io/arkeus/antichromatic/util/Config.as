@@ -12,12 +12,6 @@ package io.arkeus.antichromatic.util {
 		public static const CLICK_TO_MOVE:Boolean = DEBUG_MODE || false;
 		public static const SPLASH_ENABLED:Boolean = true;
 		
-		public static const KONGREGATE:String = "Kongregate";
-		public static const NEWGROUNDS:String = "Newgrounds";
-		
-		public static const RELEASE:String = KONGREGATE;
-		public static const VERSION:String = "1.0";
-		
 		public static const MESSAGE_OPTIONS:Object = {
 			background: Resource.MESSAGE_BOX,
 			x: 55,

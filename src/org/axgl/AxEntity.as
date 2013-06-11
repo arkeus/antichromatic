@@ -18,8 +18,8 @@ package org.axgl {
 		public static const DOWN:uint = 8;
 		/** Constant value meaning no directions. */
 		public static const NONE:uint = 0;
-		/** Constant value meaning all directions. */
 		public static const ANY:uint = LEFT | RIGHT | UP | DOWN;
+		/** Constant value meaning all directions. */
 
 		/**
 		 * Determines whether or not this object should be drawn. If this is false, the draw method will
