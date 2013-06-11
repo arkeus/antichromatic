@@ -22,11 +22,13 @@ package io.arkeus.antichromatic.game {
 	import org.axgl.AxPoint;
 	import org.axgl.AxRect;
 	import org.axgl.AxState;
+	import org.axgl.AxU;
 	import org.axgl.AxVector;
 	import org.axgl.collision.AxCollisionGroup;
 	import org.axgl.collision.AxGrid;
 	import org.axgl.input.AxKey;
 	import org.axgl.plus.message.AxMessage;
+	import org.axgl.tilemap.AxTile;
 
 	public class GameState extends AxState {
 		public static var grid:AxCollisionGroup;
@@ -143,9 +145,18 @@ package io.arkeus.antichromatic.game {
 			}
 		}
 
-		public function teleport(x:Number, y:Number, ox:int = 0, oy:int = 0, transitionProperties:TransitionProperties = null):void {
+		public function teleport(x:Number, y:Number, ox:int = 0, oy:int = 0, transitionProperties:TransitionProperties = null, force:Boolean = false):Boolean {
 			if (frozen) {
-				return;
+				return false;
+			}
+			
+			var tile:AxTile = null;
+			try {
+				tile = world.getTileAtPixelCoordinates(AxU.clamp(player.center.x, 0, world.width - 1), AxU.clamp(player.center.y, 0, world.height - 1));
+			} catch (error:Error) { }
+			if (!force && (tile == null || tile.collision == ANY)) {
+				respawn();
+				return false;
 			}
 			
 			frozen = true;
@@ -165,10 +176,11 @@ package io.arkeus.antichromatic.game {
 				Ax.switchState(new GameState);
 				Ax.camera.fadeIn(0.25);
 			});
+			return true;
 		}
 		
 		public function respawn():void {
-			teleport((initialX - world.room.x) * Tile.SIZE, (initialY - world.room.y) * Tile.SIZE, roomOffsetX, roomOffsetY, transitionProperties);
+			teleport((initialX - world.room.x) * Tile.SIZE, (initialY - world.room.y) * Tile.SIZE, roomOffsetX, roomOffsetY, transitionProperties, true);
 		}
 		
 		// hardcoded for time
