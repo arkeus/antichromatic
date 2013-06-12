@@ -16,7 +16,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		override public function update():void {
 			if (!(this is Boss)) {
 				if (hue == Registry.player.hue || hue == COLOR) {
-					alpha = 1;
+					alpha = hurt ? 0.5 : 1;
 					blend = AxBlendMode.TRANSPARENT_TEXTURE;
 				} else {
 					alpha = 0.2;

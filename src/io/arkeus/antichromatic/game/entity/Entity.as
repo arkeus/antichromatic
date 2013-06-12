@@ -14,6 +14,7 @@ package io.arkeus.antichromatic.game.entity {
 		public var killable:Boolean = false;
 		
 		public var hp:int = 5;
+		protected var hurt:Boolean = false;
 		
 		public function Entity(x:Number = 0, y:Number = 0, graphic:Class = null, frameWidth:uint = 0, frameHeight:uint = 0) {
 			super(x, y, graphic, frameWidth, frameHeight);
@@ -22,8 +23,9 @@ package io.arkeus.antichromatic.game.entity {
 		public function hit(bullet:Bullet):void {
 			Sound.play("hit-enemy");
 			hp--;
-			color.hex = 0xffff5555;
-			addTimer(0.1, function():void { color.hex = 0xffffffff; });
+			color.hex = 0x88ff5555;
+			hurt = true;
+			addTimer(0.1, function():void { color.hex = 0xffffffff; hurt = false; });
 			if (hp <= 0) {
 				destroy();
 			}
