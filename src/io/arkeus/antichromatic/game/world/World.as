@@ -40,6 +40,7 @@ package io.arkeus.antichromatic.game.world {
 		}
 
 		private function swapBackgroundTile(count:uint):void {
+			return; // This is slow, not worth the lag on older computers
 			if (Registry.quality != Quality.HIGH) {
 				return;
 			}
