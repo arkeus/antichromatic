@@ -4,6 +4,7 @@ package io.arkeus.antichromatic.splash {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.title.TitleState;
 	import io.arkeus.antichromatic.util.Registry;
+	import io.arkeus.antichromatic.util.Release;
 	
 	import org.axgl.Ax;
 	import org.axgl.AxSprite;
@@ -31,6 +32,9 @@ package io.arkeus.antichromatic.splash {
 			
 			for each(var splash:Array in SPLASHES) {
 				displaySplash(splash);
+				if (Release.NAME == Release.ADDICTING_GAMES) {
+					break;
+				}
 			}
 			
 			addTimer(delay, function():void {
