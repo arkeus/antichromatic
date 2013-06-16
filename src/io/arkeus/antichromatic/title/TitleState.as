@@ -1,4 +1,6 @@
 package io.arkeus.antichromatic.title {
+	import flash.geom.Rectangle;
+	
 	import io.arkeus.antichromatic.assets.Particle;
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.assets.Sound;
@@ -6,8 +8,10 @@ package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.game.world.Tile;
 	import io.arkeus.antichromatic.pause.PauseState;
 	import io.arkeus.antichromatic.scene.IntroState;
+	import io.arkeus.antichromatic.sponsor.SponsorSprite;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Registry;
+	import io.arkeus.antichromatic.util.Release;
 	
 	import org.axgl.Ax;
 	import org.axgl.AxButton;
@@ -68,14 +72,12 @@ package io.arkeus.antichromatic.title {
 			Ax.camera.reset();
 			Analytics.view("title");
 			Registry.sendAPI();
+			
+			siteLockSetup();
 		}
 		
 		override public function update():void {
 			logoColor.alpha = Math.sin(Ax.now / 500) * 0.5;
-			
-			if (Ax.keys.pressed(AxKey.M)) {
-				Ax.switchState(new IntroState);
-			}
 			
 			super.update();
 		}
@@ -171,6 +173,16 @@ package io.arkeus.antichromatic.title {
 			buttons.visible = buttons.active = buttons.exists = true;
 			if (sourceState != PauseState) {
 				Registry.loading = false;
+			}
+		}
+		
+		private function siteLockSetup():void {
+			if (Release.NAME == Release.ADDICTING_GAMES) {
+				this.add(new SponsorSprite(266, 482, Resource.ADDICTING_GAMES_LOGO, "http://www.addictinggames.com/"));
+			} else if (Release.NAME == Release.ARMOR_GAMES) {
+				this.add(new SponsorSprite(154, 502, Resource.ARMOR_GAMES_LOGO, "http://armor.ag/MoreGames", false, new Rectangle(0, 30, 412, 94)));
+				this.add(new SponsorSprite(110, 242, Resource.ARMOR_GAMES_MORE, "http://armor.ag/MoreGames"));
+				this.add(new SponsorSprite(542, 242, Resource.ARMOR_GAMES_LIKE, "http://www.facebook.com/ArmorGames"));
 			}
 		}
 	}
