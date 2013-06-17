@@ -8,14 +8,20 @@ package io.arkeus.antichromatic.util {
 
 	public class Analytics {
 		private static var tracker:AnalyticsTracker;
+		private static var enabled:Boolean = false;
 		
 		public static function initialize():void {
+			enabled = true;
 			tracker = new GATracker(Ax.stage2D, "UA-40922558-1", "AS3", false);
 			view("");
 			trackReferral();
 		}
 		
 		public static function view(page:String):void {
+			if (!enabled) {
+				return;
+			}
+			
 			try {
 				page = "/" + page;
 				tracker.trackPageview(page);
@@ -26,6 +32,10 @@ package io.arkeus.antichromatic.util {
 		}
 		
 		public static function event(category:String, action:String, label:String = null, value:Number = NaN):void {
+			if (!enabled) {
+				return;
+			}
+			
 			try {
 				tracker.trackEvent(category, action, label, value);
 				Ax.logger.info("Sent event " + category + ":" + action);
@@ -35,6 +45,10 @@ package io.arkeus.antichromatic.util {
 		}
 		
 		private static function trackReferral():void {
+			if (!enabled) {
+				return;
+			}
+			
 			var url:String = getUrl();
 			view("refer/?page=" + url);
 			event("refer", url);
@@ -43,7 +57,7 @@ package io.arkeus.antichromatic.util {
 		private static function getUrl():String {
 			var page:String = "Unknown";
 			try {
-				page = ExternalInterface.call('window.location.href.toString');
+				page = ExternalInterface.call("window.location.href.toString");
 			} catch (error:Error) {
 				Ax.logger.error("External interface could not call window location: " + error.message);
 				try {
