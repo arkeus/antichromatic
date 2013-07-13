@@ -21,6 +21,7 @@ package io.arkeus.antichromatic.game.world {
 	import io.arkeus.antichromatic.util.TransitionProperties;
 	
 	import org.axgl.Ax;
+	import org.axgl.AxCloud;
 	import org.axgl.AxEntity;
 	import org.axgl.AxGroup;
 	import org.axgl.AxPoint;
@@ -33,6 +34,9 @@ package io.arkeus.antichromatic.game.world {
 		public var tiles:Class;
 		public var rooms:Class;
 		public var entities:AxGroup;
+		public var spikes:AxCloud;
+		public var spikesB:AxCloud;
+		public var spikesW:AxCloud;
 
 		private var x:uint, y:uint;
 		private var roomX:uint, roomY:uint;
@@ -44,6 +48,12 @@ package io.arkeus.antichromatic.game.world {
 			this.tiles = tiles;
 			this.rooms = rooms;
 			this.entities = new AxGroup;
+			this.entities.add(this.spikes = new AxCloud);
+			this.entities.add(this.spikesB = new AxCloud);
+			this.entities.add(this.spikesW = new AxCloud);
+			this.spikes.freeze();
+			this.spikesB.freeze();
+			this.spikesW.freeze();
 			this.roomX = roomX;
 			this.roomY = roomY;
 			this.roomOffsetX = roomOffsetX;
@@ -210,10 +220,16 @@ package io.arkeus.antichromatic.game.world {
 					entities.add(new Laser(Entity.BLACK, px, py, true));
 					break;
 				}
-				case WHITE_SPIKE:
-				case BLACK_SPIKE:
+				case WHITE_SPIKE:  {
+					spikesW.add(new Spike(cp == COLOR_SPIKE ? Entity.COLOR : cp == WHITE_SPIKE ? Entity.WHITE : Entity.BLACK, px, py, udDir));
+					break;
+				}
+				case BLACK_SPIKE:  {
+					spikesB.add(new Spike(cp == COLOR_SPIKE ? Entity.COLOR : cp == WHITE_SPIKE ? Entity.WHITE : Entity.BLACK, px, py, udDir));
+					break;
+				}
 				case COLOR_SPIKE:  {
-					entities.add(new Spike(cp == COLOR_SPIKE ? Entity.COLOR : cp == WHITE_SPIKE ? Entity.WHITE : Entity.BLACK, px, py, udDir));
+					spikes.add(new Spike(cp == COLOR_SPIKE ? Entity.COLOR : cp == WHITE_SPIKE ? Entity.WHITE : Entity.BLACK, px, py, udDir));
 					break;
 				}
 				case WHITE_CANNON:  {

@@ -19,7 +19,7 @@ package io.arkeus.antichromatic.title {
 			Registry.initialize();
 			Sound.initialize();
 			
-			if (Release.NAME != Release.ADDICTING_GAMES && Release.NAME != Release.ARMOR_GAMES) {
+			if (Release.NAME != Release.ADDICTING_GAMES && Release.NAME != Release.ARMOR_GAMES && Release.NAME != Release.LOCAL) {
 				Analytics.initialize();
 			}
 			

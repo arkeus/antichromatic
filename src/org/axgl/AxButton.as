@@ -32,7 +32,7 @@ package org.axgl {
 		 *
 		 * @default null
 		 */
-		private var label:AxText;
+		public var label:AxText;
 		/**
 		 * The y value of the label. By default it will be centered vertically when you add text.
 		 */

@@ -6,8 +6,10 @@ package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.world.Tile;
+	import io.arkeus.antichromatic.input.Input;
+	import io.arkeus.antichromatic.ouya.OuyaButton;
+	import io.arkeus.antichromatic.ouya.OuyaButtonGroup;
 	import io.arkeus.antichromatic.pause.PauseState;
-	import io.arkeus.antichromatic.scene.IntroState;
 	import io.arkeus.antichromatic.sponsor.SponsorSprite;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Registry;
@@ -15,21 +17,20 @@ package io.arkeus.antichromatic.title {
 	
 	import org.axgl.Ax;
 	import org.axgl.AxButton;
-	import org.axgl.AxGroup;
+	import org.axgl.AxSimpleSprite;
 	import org.axgl.AxSprite;
 	import org.axgl.AxState;
 	import org.axgl.AxU;
-	import org.axgl.input.AxKey;
-	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.render.AxBlendMode;
+	import org.axgl.sound.AxMusic;
+	import org.axgl.sound.AxSound;
 	import org.axgl.util.AxPauseState;
 
 	public class TitleState extends AxState {
-		private var background:AxSprite;
-		private var foreground:AxSprite;
+		private var background:AxSimpleSprite;
 		private var logo:AxSprite;
 		private var logoColor:AxSprite;
-		private var buttons:AxGroup;
+		private var buttons:OuyaButtonGroup;
 		
 		public function TitleState() {
 			Registry.playMusic(TitleMusic);
@@ -38,10 +39,11 @@ package io.arkeus.antichromatic.title {
 		override public function create():void {
 			noScroll();
 			
-			this.add(background = new AxSprite(0, 0, Resource.TITLE_BACKGROUND));
+			this.add(background = new AxSimpleSprite(0, 0, Resource.TITLE_BACKGROUND));
 			this.add(Particle.initialize(), false, false);
 			
 			this.add(logoColor = new AxSprite(0, 0, Resource.TITLE_LOGO_COLOR));
+			//logoColor = new AxSprite(0, 0, Resource.TITLE_LOGO_COLOR);
 			logoColor.blend = AxBlendMode.TRANSPARENT_TEXTURE;
 			logoColor.origin.x = Ax.viewWidth / 2;
 			logoColor.origin.y = 86;
@@ -51,15 +53,17 @@ package io.arkeus.antichromatic.title {
 			logoColorGrow();
 			logoColorFadeOut();
 			
-			this.add(foreground = new AxSprite(0, 0, Resource.TITLE_FOREGROUND));
-			
 			var continueButton:AxButton;
-			this.add(buttons = new AxGroup);
-			buttons.add(new AxButton(67, 144, Resource.BUTTON, 107, 24).text("New Game", null, 7, 3).onClick(newGame));
-			buttons.add(continueButton = new AxButton(186, 144, Resource.BUTTON, 107, 24).text("Continue", null, 7, 3).onClick(Registry.hasSave() ? continueGame : null));
-			buttons.add(new AxButton(67, 180, Resource.BUTTON, 107, 24).text("Credits", null, 7, 3).onClick(credits));
-			buttons.add(new AxButton(186, 180, Resource.BUTTON, 107, 24).text("Options", null, 7, 3).onClick(options));
-			buttons.add(new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Best Times", null, 7, 3).onClick(times));
+			this.add(buttons = new OuyaButtonGroup);
+			buttons.add(new OuyaButton(67, 144, Resource.BUTTON, 107, 24).text("New Game", null, 7, 3).onClick(newGame));
+			buttons.add(continueButton = new OuyaButton(186, 144, Resource.BUTTON, 107, 24).text("Continue", null, 7, 3).onClick(Registry.hasSave() ? continueGame : null));
+			buttons.add(new OuyaButton(67, 180, Resource.BUTTON, 107, 24).text("Credits", null, 7, 3).onClick(credits));
+			buttons.add(new OuyaButton(186, 180, Resource.BUTTON, 107, 24).text("Options", null, 7, 3).onClick(options));
+			buttons.add(new OuyaButton(126, 216, Resource.BUTTON, 107, 24).text("Best Times", null, 7, 3).onClick(times));
+			
+			if (Registry.hasSave()) {
+				buttons.forceSelect(continueButton as OuyaButton);
+			}
 			
 			if (!Registry.hasSave()) {
 				continueButton.color.hex = 0xffff0000;
@@ -159,7 +163,7 @@ package io.arkeus.antichromatic.title {
 		private function emitTile():void {
 			var tx:uint = AxU.rand(0, 29) * Tile.SIZE;
 			var ty:uint = AxU.rand(0, 24) * Tile.SIZE;
-			AxParticleSystem.emit(Particle.TILE, tx, ty);
+			//AxParticleSystem.emit(Particle.TILE, tx, ty);
 		}
 		
 		override public function onPause(sourceState:Class):void {

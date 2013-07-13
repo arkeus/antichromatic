@@ -28,7 +28,7 @@ package io.arkeus.antichromatic.assets {
 			var effect:AxParticleEffect;
 			
 			effect = new AxParticleEffect(BULLET, Resource.PARTICLE_GUN_BLACK, 50);
-			effect.amount = 20;
+			effect.amount = 10;
 			effect.x.min = -2; effect.x.max = 2;
 			effect.y.min = -2; effect.y.max = 2;
 			effect.frameSize.x = effect.frameSize.y = 2;
@@ -64,7 +64,7 @@ package io.arkeus.antichromatic.assets {
 			group.add(AxParticleSystem.register(effect));
 			
 			effect = new AxParticleEffect(EXPLOSION, Resource.PARTICLE_GUN_BLACK, 5);
-			effect.amount = 500;
+			effect.amount = 200;
 			effect.x.min = -2; effect.x.max = 2;
 			effect.y.min = -2; effect.y.max = 2;
 			effect.frameSize.x = effect.frameSize.y = 2;
@@ -121,21 +121,6 @@ package io.arkeus.antichromatic.assets {
 			effect.yVelocity.min = -800; effect.yVelocity.max = 20;
 			effect.yAcceleration.min = 400; effect.yAcceleration.max = 600;
 			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			group.add(AxParticleSystem.register(effect));
-			
-			effect = new AxParticleEffect(TILE, Resource.PARTICLE_TILE, 20);
-			effect.amount = 1;
-			effect.x.min = 0; effect.x.max = 0;
-			effect.y.min = 0; effect.y.max = 0;
-			effect.frameSize.x = effect.frameSize.y = 12;
-			//effect.blend = AxBlendMode.PARTICLE;
-			effect.xVelocity.min = 0; effect.xVelocity.max = 0;
-			effect.yVelocity.min = 0; effect.yVelocity.max = 0;
-			effect.lifetime.min = 1; effect.lifetime.max = 2;
-			effect.startAlpha.min = 1; effect.startAlpha.max = 1;
-			effect.endAlpha.min = 0; effect.endAlpha.max = 0;
-			//effect.endScale.min = 3; effect.endScale.max = 6;
-			group.add(AxParticleSystem.register(effect));
 			
 			return group;
 		}

@@ -1,5 +1,7 @@
 package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.ouya.OuyaButton;
+	import io.arkeus.antichromatic.ouya.OuyaButtonGroup;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Difficulty;
 	import io.arkeus.antichromatic.util.Registry;
@@ -14,10 +16,13 @@ package io.arkeus.antichromatic.title {
 		private static const INCOMPLETE_STRING:String = "Incomplete";
 		
 		private var backButton:AxButton;
+		private var buttons:OuyaButtonGroup;
 		
 		override public function create():void {
 			noScroll();
-			this.add(backButton = new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
+			
+			this.add(buttons = new OuyaButtonGroup);
+			buttons.add(backButton = new OuyaButton(126, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
 			
 			this.add(new AxText(63, 145, null, "Best @[d9ff9a]Hard Mode@[] Time"));
 			this.add(new AxText(63, 145, null, "@[d9ff9a]" + normalTime + "@[]", 240, "right"));

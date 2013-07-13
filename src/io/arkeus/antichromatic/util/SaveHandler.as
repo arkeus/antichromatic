@@ -81,8 +81,8 @@ package io.arkeus.antichromatic.util {
 			try {
 				so.data.musicMuted = musicMuted;
 				so.data.soundMuted = soundMuted;
-				so.data.quality = quality;
-				so.data.controls = controls;
+				//so.data.quality = quality;
+				//so.data.controls = controls;
 				
 				so.data.normalDeaths = Registry.normalDeaths;
 				so.data.normalTime = Registry.normalTime;
@@ -96,11 +96,11 @@ package io.arkeus.antichromatic.util {
 		}
 		
 		public function loadGlobals():void {
-			try {				
+			try {
 				if (so.data.musicMuted != null) { Ax.musicMuted = so.data.musicMuted; }
 				if (so.data.soundMuted != null) { Ax.soundMuted = so.data.soundMuted; }
-				if (so.data.quality != null) { Registry.quality = so.data.quality; }
-				if (so.data.controls != null) { Registry.controls = so.data.controls; }
+				//if (so.data.quality != null) { Registry.quality = so.data.quality; }
+				//if (so.data.controls != null) { Registry.controls = so.data.controls; }
 				if (so.data.normalDeaths != null) { Registry.normalDeaths = so.data.normalDeaths; }
 				if (so.data.normalTime != null) { Registry.normalTime = so.data.normalTime; }
 				if (so.data.hardDeaths != null) { Registry.hardDeaths = so.data.hardDeaths; }

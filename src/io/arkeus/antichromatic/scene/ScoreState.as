@@ -1,5 +1,6 @@
 package io.arkeus.antichromatic.scene {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.input.Input;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Registry;
 	import io.arkeus.antichromatic.util.Utils;
@@ -8,7 +9,6 @@ package io.arkeus.antichromatic.scene {
 	import org.axgl.AxButton;
 	import org.axgl.AxSprite;
 	import org.axgl.AxState;
-	import org.axgl.input.AxKey;
 	import org.axgl.text.AxText;
 
 	public class ScoreState extends AxState {
@@ -43,7 +43,7 @@ package io.arkeus.antichromatic.scene {
 			
 			super.update();
 			
-			if (Ax.keys.pressed(AxKey.ESCAPE)) {
+			if (Input.pressed(Input.ACCEPT)) {
 				back();
 			}
 		}

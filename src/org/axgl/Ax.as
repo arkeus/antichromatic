@@ -19,6 +19,10 @@ package org.axgl {
 	import flash.utils.getTimer;
 	
 	import io.arkeus.antichromatic.game.world.Noise;
+	import io.arkeus.antichromatic.input.Input;
+	import io.arkeus.antichromatic.util.Config;
+	import io.arkeus.antichromatic.util.Registry;
+	import io.arkeus.ouya.ControllerInput;
 	
 	import org.axgl.camera.AxCamera;
 	import org.axgl.collision.AxCollider;
@@ -305,7 +309,7 @@ package org.axgl {
 			Ax.debug = debugStacktrace != null && debugStacktrace.search(/:[0-9]+]$/m) > -1;
 			Ax.debuggerEnabled = Ax.debug;
 			
-			Ax.pauseState = AxPauseState;
+			Ax.pauseState = null;
 			Ax.initialized = false;
 			Ax.paused = false;
 			Ax.logger = new AxLogger;
@@ -334,6 +338,7 @@ package org.axgl {
 			stage2D = stage;
 			stage2D.scaleMode = StageScaleMode.NO_SCALE;
 			stage2D.align = StageAlign.TOP_LEFT;
+			stage2D.color = 0xff000000;
 
 			if (!ApplicationDomain.currentDomain.hasDefinition("flash.display.Stage3D")) {
 				throw new Error("Stage3D is not available!");
@@ -351,24 +356,30 @@ package org.axgl {
 		 * Sets up listeners and global objects used by the game engine.
 		 */
 		protected function systemSetup():void {
-			// Create keyboard and bind key events
 			keys = new AxKeyboard;
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, keys.onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, keys.onKeyUp);
-
-			// Create mouse and bind mouse events
 			mouse = new AxMouse;
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, mouse.onMouseDown);
-			stage.addEventListener(MouseEvent.MOUSE_UP, mouse.onMouseUp);
 			
-			// Bind touch evenets
-			stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
-			stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
-			stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
-
-			// Bind focus and unfocus events
-			stage.addEventListener(Event.DEACTIVATE, onFocusLost);
-			stage.addEventListener(Event.ACTIVATE, onFocusGained);
+			if (Config.KEYBOARD_ENABLED) {
+				// Create keyboard and bind key events
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, keys.onKeyDown);
+				stage.addEventListener(KeyboardEvent.KEY_UP, keys.onKeyUp);
+	
+				// Create mouse and bind mouse events
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, mouse.onMouseDown);
+				stage.addEventListener(MouseEvent.MOUSE_UP, mouse.onMouseUp);
+				
+				// Bind touch evenets
+				stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
+				stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
+				stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
+	
+				// Bind focus and unfocus events
+				stage.addEventListener(Event.DEACTIVATE, onFocusLost);
+				stage.addEventListener(Event.ACTIVATE, onFocusGained);
+			}
+			
+			stage.addEventListener(Event.DEACTIVATE, killSounds);
+			stage.addEventListener(Event.ACTIVATE, replayMusic);
 		}
 
 		/**
@@ -406,6 +417,16 @@ package org.axgl {
 			// For now, touching controls mouse x/y
 			mouse.update(event.stageX, event.stageY);
 		}
+		
+		private function killSounds(event:* = null):void {
+			for each(var sound:AxSound in sounds.members) {
+				sound.destroy();
+			}
+		}
+		
+		private function replayMusic(event:* = null):void {
+			Registry.replayMusic();
+		}
 
 		/**
 		 * Callback when the game loses focus.
@@ -413,6 +434,7 @@ package org.axgl {
 		 * @param event The focus event.
 		 */
 		protected function onFocusLost(event:Event):void {
+			killSounds();
 			keys.releaseAll();
 			mouse.releaseAll();
 			stage.frameRate = unfocusedFramerate;
@@ -491,11 +513,15 @@ package org.axgl {
 		protected function initialize():void {
 			stage.frameRate = requestedFramerate;
 			
-			Ax.width = requestedWidth == 0 ? stage.stageWidth : requestedWidth;
-			Ax.height = requestedHeight == 0 ? stage.stageHeight : requestedHeight;
+			Ax.width = 360; //requestedWidth == 0 ? stage.stageWidth : requestedWidth;
+			Ax.height = 300; //requestedHeight == 0 ? stage.stageHeight : requestedHeight;
 			
-			context.configureBackBuffer(Ax.width, Ax.height, 0, false);
-			context.enableErrorChecking = true;
+			var height:uint = Math.floor(stage.stageHeight);
+			var width:uint = Math.floor(height * 1.2);
+			
+			context.configureBackBuffer(width, height, 0, false);
+			context.enableErrorChecking = false;
+			stage3D.x = (stage.stageWidth - width) / 2;
 			
 			AxResource.initialize();
 			camera = new AxCamera;
@@ -503,6 +529,8 @@ package org.axgl {
 			debugger = new AxDebugger;
 			logger.log(LIBRARY_NAME + " " + LIBRARY_VERSION + " successfully loaded");
 			logger.console = true;
+			
+			//logger.info("width " + width + ", height " + height);
 			
 			// Handle game initialization
 			create();
@@ -586,6 +614,12 @@ package org.axgl {
 		 * Updates the active states, camera, mouse, and sounds.
 		 */
 		protected function update():void {
+			Input.update();
+			
+//			while (ControllerInput.errors.length > 0) {
+//				Ax.logger.error(ControllerInput.errors.shift());
+//			}
+			
 			for (var i:uint = 0; i < states.length; i++) {
 				var state:AxState = states[i];
 				if (i == states.length - 1 || state.persistantUpdate) {
@@ -612,7 +646,7 @@ package org.axgl {
 				noise = new Noise();
 			}
 			
-			context.clear(background.red, background.green, background.blue);
+			context.clear(0, 0, 0);
 			context.setCulling(Context3DTriangleFace.NONE);
 			context.setDepthTest(false, Context3DCompareMode.ALWAYS);
 
@@ -628,8 +662,8 @@ package org.axgl {
 			if (debugger.active) {
 				debugger.draw();
 			}
-			noise.update();
-			noise.draw();
+			//noise.update();
+			//noise.draw();
 			
 			context.present();
 		}

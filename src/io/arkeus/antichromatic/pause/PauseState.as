@@ -2,6 +2,9 @@ package io.arkeus.antichromatic.pause {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.game.GameState;
 	import io.arkeus.antichromatic.game.world.Tile;
+	import io.arkeus.antichromatic.input.Input;
+	import io.arkeus.antichromatic.ouya.OuyaButton;
+	import io.arkeus.antichromatic.ouya.OuyaButtonGroup;
 	import io.arkeus.antichromatic.title.TitleState;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Item;
@@ -22,6 +25,8 @@ package io.arkeus.antichromatic.pause {
 		private var sound:AxButton;
 		private var quality:AxButton;
 		private var backButton:AxButton;
+		
+		private var buttons:OuyaButtonGroup;
 		
 		override public function create():void {
 			noScroll();
@@ -47,14 +52,15 @@ package io.arkeus.antichromatic.pause {
 			map.load(Registry.map);
 			addMapTarget();
 			
-			this.add(music = new AxButton(67, 176, Resource.BUTTON, 107, 24).text("Music On", null, 7, 3).onClick(toggleMusic));
-			this.add(sound = new AxButton(186, 176, Resource.BUTTON, 107, 24).text("Sound On", null, 7, 3).onClick(toggleSound));
-			this.add(quality = new AxButton(67, 212, Resource.BUTTON, 107, 24).text("High Quality", null, 7, 3).onClick(toggleQuality));
-			this.add(backButton = new AxButton(186, 212, Resource.BUTTON, 107, 24).text("Quit", null, 7, 3).onClick(quit));
+			this.add(buttons = new OuyaButtonGroup);
+			buttons.add(music = new OuyaButton(67, 176, Resource.BUTTON, 107, 24).text("Music On", null, 7, 3).onClick(toggleMusic));
+			buttons.add(sound = new OuyaButton(186, 176, Resource.BUTTON, 107, 24).text("Sound On", null, 7, 3).onClick(toggleSound));
+			//buttons.add(quality = new OuyaButton(67, 212, Resource.BUTTON, 107, 24).text("High Quality", null, 7, 3).onClick(toggleQuality));
+			buttons.add(backButton = new OuyaButton(126, 212, Resource.BUTTON, 107, 24).text("Quit", null, 7, 3).onClick(quit));
 			
 			Options.updateMusicButton(music);
 			Options.updateSoundButton(sound);
-			Options.updateQualityButton(quality);
+			//Options.updateQualityButton(quality);
 			
 			Ax.keys.releaseAll();
 			Analytics.view("pause");
@@ -80,7 +86,7 @@ package io.arkeus.antichromatic.pause {
 		}
 		
 		override public function update():void {
-			if (Ax.keys.pressed(AxKey.ANY) && !Registry.loading) {
+			if ((Input.pressed(Input.CANCEL) || Input.pressed(Input.MENU)) && !Registry.loading) {
 				Ax.popState();
 				Ax.keys.releaseAll();
 			}
@@ -108,7 +114,7 @@ package io.arkeus.antichromatic.pause {
 		}
 		
 		private function toggleQuality():void {
-			Options.toggleQuality(quality);
+			//Options.toggleQuality(quality);
 		}
 		
 		private function quit():void {

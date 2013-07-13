@@ -710,8 +710,8 @@ package org.axgl.tilemap {
 			// v1  = uv
 			// fs0 = something
 			// fc0 = color
-			"tex ft0, v1, fs0 <2d,nearest,mipnone>", // sample texture
-			"mul oc, fc0, ft0",						 // multiply by color+alpha
+			"tex oc, v1, fs0 <2d,nearest,mipnone>", // sample texture
+			//"mul oc, fc0, ft0",						 // multiply by color+alpha
 		];
 	}
 }

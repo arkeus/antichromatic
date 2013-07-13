@@ -7,7 +7,7 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		public function Laser(hue:uint, x:uint, y:uint, rotate:Boolean = false) {
 			super(hue, x + PADDING, y);
 			load(hue == WHITE ? Resource.LASER_WHITE : Resource.LASER_BLACK, 12, 12);
-			addAnimation("laser", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 24);
+			addAnimation("laser", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 12);
 			animate("laser");
 			
 			width = 12 - PADDING * 2;
@@ -16,6 +16,10 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			if (rotate) {
 				angle = 90;
 			}
+		}
+		
+		override public function update():void {
+			super.update();
 		}
 	}
 }

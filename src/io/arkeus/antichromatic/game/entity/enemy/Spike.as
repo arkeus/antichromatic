@@ -11,8 +11,8 @@ package io.arkeus.antichromatic.game.entity.enemy {
 			switch (dir) {
 				case DOWN: frame += 3; height = 6; break;
 				case RIGHT: frame += 6; width = 6; break;
-				case LEFT: frame += 9; width = 6; offset.x = 6; this.x += 6; break;
-				case UP: height = 6; offset.y = 6; this.y += 6; break;
+				case LEFT: frame += 9; width = 6; offset.x = 6; break;
+				case UP: height = 6; offset.y = 6; break;
 			}
 			if (hue == WHITE) {
 				frame += 1;

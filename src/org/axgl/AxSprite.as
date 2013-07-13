@@ -127,7 +127,13 @@ package org.axgl {
 		 *
 		 * @return The sprite instance.
 		 */
-		public function load(graphic:*, frameWidth:uint = 0, frameHeight:uint = 0):AxSprite {
+		public function load(graphic:*, frameWidth:uint = 0, frameHeight:uint = 0, softLoad:Boolean = false):AxSprite {
+			if (softLoad) {
+				calculateTexture(graphic);
+				dirty = true;
+				frame = 0;
+				return this;
+			}
 			this.frameWidth = frameWidth;
 			this.frameHeight = frameHeight;
 			calculateTexture(graphic);

@@ -10,7 +10,8 @@ package io.arkeus.antichromatic.util {
 		public static const DIALOG_ENABLED:Boolean = DEBUG_MODE ? false : true;
 		public static const TITLE_ENABLED:Boolean = DEBUG_MODE || true;
 		public static const CLICK_TO_MOVE:Boolean = DEBUG_MODE || false;
-		public static const SPLASH_ENABLED:Boolean = true;
+		public static const SPLASH_ENABLED:Boolean = false;
+		public static const KEYBOARD_ENABLED:Boolean = false;
 		
 		public static const MESSAGE_OPTIONS:Object = {
 			background: Resource.MESSAGE_BOX,

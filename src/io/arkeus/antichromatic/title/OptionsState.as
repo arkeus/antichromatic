@@ -1,5 +1,7 @@
 package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.ouya.OuyaButton;
+	import io.arkeus.antichromatic.ouya.OuyaButtonGroup;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Options;
 	
@@ -12,19 +14,21 @@ package io.arkeus.antichromatic.title {
 		private var sound:AxButton;
 		private var quality:AxButton;
 		private var backButton:AxButton;
+		private var buttons:OuyaButtonGroup;
 		
 		override public function create():void {
 			noScroll();
 			
-			this.add(music = new AxButton(67, 144, Resource.BUTTON, 107, 24).text("Music On", null, 7, 3).onClick(toggleMusic));
-			this.add(sound = new AxButton(186, 144, Resource.BUTTON, 107, 24).text("Sound On", null, 7, 3).onClick(toggleSound));
-			this.add(quality = new AxButton(67, 180, Resource.BUTTON, 107, 24).text("High Quality", null, 7, 3).onClick(toggleQuality));
-			this.add(backButton = new AxButton(186, 180, Resource.BUTTON, 107, 24).text("Controls", null, 7, 3).onClick(controls));
-			this.add(backButton = new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
+			this.add(buttons = new OuyaButtonGroup);
+			buttons.add(music = new OuyaButton(67, 168, Resource.BUTTON, 107, 24).text("Music On", null, 7, 3).onClick(toggleMusic));
+			buttons.add(sound = new OuyaButton(186, 168, Resource.BUTTON, 107, 24).text("Sound On", null, 7, 3).onClick(toggleSound));
+			//buttons.add(quality = new OuyaButton(127, 180, Resource.BUTTON, 107, 24).text("High Quality", null, 7, 3).onClick(toggleQuality));
+			//buttons.add(backButton = new OuyaButton(186, 180, Resource.BUTTON, 107, 24).text("Controls", null, 7, 3).onClick(controls));
+			buttons.add(backButton = new OuyaButton(127, 204, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
 			
 			Options.updateMusicButton(music);
 			Options.updateSoundButton(sound);
-			Options.updateQualityButton(quality);
+			//Options.updateQualityButton(quality);
 			
 			Analytics.view("options");
 			persistantDraw = false;
@@ -39,7 +43,7 @@ package io.arkeus.antichromatic.title {
 		}
 
 		private function toggleQuality():void {
-			Options.toggleQuality(quality);
+			//Options.toggleQuality(quality);
 		}
 		
 		private function controls():void {

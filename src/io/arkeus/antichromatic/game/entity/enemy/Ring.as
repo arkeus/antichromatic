@@ -2,10 +2,13 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	import io.arkeus.antichromatic.assets.Particle;
 	import io.arkeus.antichromatic.assets.Resource;
 	
+	import org.axgl.Ax;
 	import org.axgl.particle.AxParticleSystem;
 
 	public class Ring extends HueEnemy {
 		private static const SPEED:Number = 100;
+		
+		private static var lastDied:uint = 0;
 		
 		public function Ring(hue:uint, x:uint, y:uint, dx:Number, dy:Number, cannon:Boolean = true) {
 			var tx:uint = dx == 0 && cannon ? x + 3 : x;
@@ -29,6 +32,11 @@ package io.arkeus.antichromatic.game.entity.enemy {
 		override public function update():void {
 			if (touching > 0) {
 				AxParticleSystem.emit(Particle.BULLET, center.x, center.y);
+				if (lastDied < Ax.now - 200) {
+					lastDied = Ax.now;
+				} else {
+					deathSound = null;
+				}
 				destroy();
 			}
 			

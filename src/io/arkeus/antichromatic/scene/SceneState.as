@@ -2,6 +2,7 @@ package io.arkeus.antichromatic.scene {
 	import io.arkeus.antichromatic.assets.Resource;
 	import io.arkeus.antichromatic.game.world.World;
 	import io.arkeus.antichromatic.game.world.WorldBuilder;
+	import io.arkeus.antichromatic.input.Input;
 	import io.arkeus.antichromatic.util.Config;
 	import io.arkeus.antichromatic.util.Registry;
 	
@@ -41,7 +42,7 @@ package io.arkeus.antichromatic.scene {
 				AxMessage.show(messages, Config.SCENE_MESSAGE_OPTIONS);
 			});
 			
-			var skip:AxText = new AxText(0, Ax.viewHeight - 11, null, "@[ffdddd]Escape@[] To Skip", Ax.viewWidth, "right");
+			var skip:AxText = new AxText(0, Ax.viewHeight - 21, null, "@[ffdddd](A)@[] To Skip", Ax.viewWidth, "right");
 			skip.noScroll();
 			this.add(skip);
 		}
@@ -53,7 +54,7 @@ package io.arkeus.antichromatic.scene {
 				camera.velocity.x = speed;
 			}
 			
-			if (Ax.keys.pressed(AxKey.ESCAPE) && !complete) {
+			if (Input.pressed(Input.CANCEL) && !complete) {
 				if (Ax.state == this) {
 					clearTimers();
 					onResume(null);

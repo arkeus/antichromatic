@@ -1,5 +1,7 @@
 package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.ouya.OuyaButton;
+	import io.arkeus.antichromatic.ouya.OuyaButtonGroup;
 	import io.arkeus.antichromatic.util.Analytics;
 	
 	import org.axgl.Ax;
@@ -10,10 +12,12 @@ package io.arkeus.antichromatic.title {
 	public class CreditsState extends AxState {
 		private var backButton:AxButton;
 		private var credits:AxSprite;
+		private var buttons:OuyaButtonGroup;
 		
 		override public function create():void {
 			noScroll();
-			this.add(backButton = new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
+			this.add(buttons = new OuyaButtonGroup);
+			buttons.add(backButton = new OuyaButton(126, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
 			this.add(credits = new AxSprite(0, 0, Resource.CREDITS));
 			
 			Analytics.view("credits");

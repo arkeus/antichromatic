@@ -2,8 +2,6 @@ package io.arkeus.antichromatic.util {
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
 	
-	import flash.external.ExternalInterface;
-	
 	import org.axgl.Ax;
 
 	public class Analytics {
@@ -49,24 +47,9 @@ package io.arkeus.antichromatic.util {
 				return;
 			}
 			
-			var url:String = getUrl();
+			var url:String = "OUYA";
 			view("refer/?page=" + url);
 			event("refer", url);
-		}
-		
-		private static function getUrl():String {
-			var page:String = "Unknown";
-			try {
-				page = ExternalInterface.call("window.location.href.toString");
-			} catch (error:Error) {
-				Ax.logger.error("External interface could not call window location: " + error.message);
-				try {
-					page = Ax.stage2D.loaderInfo.url;
-				} catch (error:Error) {
-					Ax.logger.error("Could not get url from loaderInfo: " + error.message);
-				}
-			}
-			return page;
 		}
 	}
 }

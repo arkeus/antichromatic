@@ -67,7 +67,6 @@ package io.arkeus.antichromatic.assets {
 		[Embed(source = "/misc/score_frame.png")] public static const SCORE_FRAME:Class;
 		
 		[Embed(source = "/misc/title_background.png")] public static const TITLE_BACKGROUND:Class;
-		[Embed(source = "/misc/title_foreground.png")] public static const TITLE_FOREGROUND:Class;
 		[Embed(source = "/misc/title_logo.png")] public static const TITLE_LOGO:Class;
 		[Embed(source = "/misc/title_logo_color.png")] public static const TITLE_LOGO_COLOR:Class;
 		[Embed(source = "/misc/credits.png")] public static const CREDITS:Class;

@@ -8,6 +8,8 @@ package io.arkeus.antichromatic.game.entity.enemy {
 	public class Cannon extends HueEnemy {
 		private static const RECHARGE_DELAY:Number = 0.8;
 		
+		private static var lastShoot:uint = 0;
+		
 		public var recharge:Number = RECHARGE_DELAY;
 		public var dir:uint;
 		
@@ -41,7 +43,10 @@ package io.arkeus.antichromatic.game.entity.enemy {
 					case LEFT: dx = -1; dy = 0; break;
 					case UP: dx = 0; dy = -1; break;
 				}
-				Sound.play("shoot");
+				if (lastShoot < Ax.now - 200) {
+					Sound.play("shoot");
+					lastShoot = Ax.now;
+				}
 				Registry.game.objects.add(new Ring(hue, x, y, dx, dy));
 			}
 			

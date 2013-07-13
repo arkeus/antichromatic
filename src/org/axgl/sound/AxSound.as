@@ -75,6 +75,8 @@ package org.axgl.sound {
 		 * Destroys the sound, freeing up resources used.
 		 */
 		override public function destroy():void {
+			volume = 0;
+			updateVolume();
 			soundChannel.removeEventListener(Event.SOUND_COMPLETE, destroy);
 			soundChannel.stop();
 			sound = null;

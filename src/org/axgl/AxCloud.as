@@ -315,6 +315,8 @@ package org.axgl {
 				return;
 			}
 			
+			trace("UPDATING CLOUD");
+			
 			super.update();
 			
 			for (var i:uint = 0; i < members.length; i++) {

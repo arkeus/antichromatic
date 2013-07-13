@@ -8,6 +8,7 @@ package io.arkeus.antichromatic.game {
 	import io.arkeus.antichromatic.game.world.World;
 	import io.arkeus.antichromatic.game.world.WorldBuilder;
 	import io.arkeus.antichromatic.game.world.text.WallTextBuilder;
+	import io.arkeus.antichromatic.input.Input;
 	import io.arkeus.antichromatic.pause.PauseState;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Config;
@@ -17,6 +18,7 @@ package io.arkeus.antichromatic.game {
 	import io.arkeus.antichromatic.util.TransitionProperties;
 	
 	import org.axgl.Ax;
+	import org.axgl.AxCloud;
 	import org.axgl.AxEntity;
 	import org.axgl.AxGroup;
 	import org.axgl.AxPoint;
@@ -50,13 +52,18 @@ package io.arkeus.antichromatic.game {
 		public var frozen:Boolean = false;
 		public var ticking:Boolean = true;
 		
+		public var spikes:AxCloud;
+		public var spikesB:AxCloud;
+		public var spikesW:AxCloud;
+
+		
 		public function GameState() {
 			this.initialX = Registry.initialX;
 			this.initialY = Registry.initialY;
 			this.roomOffsetX = Registry.roomOffsetX;
 			this.roomOffsetY = Registry.roomOffsetY;
 			this.transitionProperties = Registry.transitionProperties;
-			if (initialX < 60 && initialY < 60 && initialX > -1 && initialY > -1) {
+			if (initialX < 60 && initialY < 55 && initialX > -1 && initialY > -1) {
 				Registry.playMusic(BossMusic);
 			} else {
 				Registry.playMusic(GameplayMusic);
@@ -84,6 +91,9 @@ package io.arkeus.antichromatic.game {
 			}
 			
 			this.add(builder.entities);
+			this.spikes = builder.spikes;
+			this.spikesB = builder.spikesB;
+			this.spikesW = builder.spikesW;
 			this.add(objects = new AxGroup);
 
 			this.add(player = new Player((initialX - world.room.x) * Tile.SIZE, (initialY - world.room.y) * Tile.SIZE, transitionProperties));
@@ -114,7 +124,7 @@ package io.arkeus.antichromatic.game {
 		}
 
 		override public function update():void {
-			if (!frozen && (Ax.keys.pressed(AxKey.ESCAPE) || Ax.keys.pressed(AxKey.TAB))) {
+			if (!frozen && (Input.pressed(Input.MENU))) {
 				Ax.pushState(new PauseState); 
 			}
 			

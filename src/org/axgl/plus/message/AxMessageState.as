@@ -1,10 +1,11 @@
 package org.axgl.plus.message {
+	import io.arkeus.antichromatic.input.Input;
+	
 	import org.axgl.Ax;
 	import org.axgl.AxRect;
 	import org.axgl.AxSprite;
 	import org.axgl.AxState;
 	import org.axgl.input.AxKey;
-	import org.axgl.input.AxMouseButton;
 	import org.axgl.resource.AxResource;
 	import org.axgl.text.AxFont;
 	import org.axgl.text.AxText;
@@ -82,7 +83,7 @@ package org.axgl.plus.message {
 			if (message.text.length < currentMessage.length) {
 				timer -= Ax.dt;
 				while (timer <= 0) {
-					timer += delay / 1000 * (Ax.keys.down(ANY) && !speedKeyDisabled ? speedDelay : 1);
+					timer += delay / 1000;
 					addCharacter();
 				}
 				
@@ -90,7 +91,7 @@ package org.axgl.plus.message {
 					speedKeyDisabled = false;
 				}
 			} else {
-				if (Ax.keys.pressed(AxKey.ANY) || Ax.mouse.pressed(AxMouseButton.LEFT)) {
+				if (Input.pressed(Input.ACCEPT)) {
 					next();
 					speedKeyDisabled = true;
 				}

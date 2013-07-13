@@ -1,4 +1,6 @@
 package org.axgl.input {
+	import io.arkeus.antichromatic.input.Input;
+	
 	import org.axgl.Ax;
 
 	/**
@@ -76,6 +78,7 @@ package org.axgl.input {
 			for (var i:uint = 0; i < keys.length; i++) {
 				keys[i] = 0;
 			}
+			Input.reset();
 		}
 	}
 }

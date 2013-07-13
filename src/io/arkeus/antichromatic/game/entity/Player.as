@@ -3,17 +3,17 @@ package io.arkeus.antichromatic.game.entity {
 	import io.arkeus.antichromatic.assets.Sound;
 	import io.arkeus.antichromatic.game.world.Tile;
 	import io.arkeus.antichromatic.game.world.World;
+	import io.arkeus.antichromatic.input.Input;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Config;
-	import io.arkeus.antichromatic.util.Controls;
 	import io.arkeus.antichromatic.util.Item;
 	import io.arkeus.antichromatic.util.Registry;
 	import io.arkeus.antichromatic.util.TransitionProperties;
+	import io.arkeus.ouya.control.JoystickControl;
 	
 	import org.axgl.Ax;
 	import org.axgl.AxVector;
 	import org.axgl.input.AxKey;
-	import org.axgl.input.AxMouseButton;
 	import org.axgl.render.AxBlendMode;
 
 	public class Player extends Entity {
@@ -108,9 +108,9 @@ package io.arkeus.antichromatic.game.entity {
 			gun.draw();
 		}
 		
+		private var left:Boolean, right:Boolean, up:Boolean, down:Boolean, jump:Boolean, swap:Boolean;
 		private function handleInput():void {
-			var left:Boolean, right:Boolean, jump:Boolean, swap:Boolean;
-			switch (Registry.controls) {
+			/*switch (Registry.controls) {
 				case Controls.WASD1:
 					left = Ax.keys.held(AxKey.A) || Ax.keys.held(AxKey.Q);
 					right = Ax.keys.held(AxKey.D);
@@ -135,17 +135,18 @@ package io.arkeus.antichromatic.game.entity {
 					jump = Ax.keys.pressed(AxKey.UP);
 					swap = Ax.keys.pressed(AxKey.SPACE);
 				break;
-			}
+			}*/
+			left = Input.held(Input.LEFT);
+			right = Input.held(Input.RIGHT);
+			up = Input.held(Input.UP);
+			down = Input.held(Input.DOWN);
+			jump = Input.pressed(Input.JUMP) || Input.pressed(Input.ALT_JUMP);
+			swap = Input.pressed(Input.SWAP) || Input.pressed(Input.ALT_SWAP);
 			
 			if (inputSinceClutch || (touching & DOWN)) {
 				clutching -= Ax.dt;
 			}
 			wallJumping -= Ax.dt;
-			
-			if (Config.CLICK_TO_MOVE && Ax.keys.pressed(AxKey.SHIFT)) {
-				x = previous.x = Ax.mouse.x - width / 2;
-				y = previous.y = Ax.mouse.y - height / 2;
-			}
 			
 			justSwapped = false;
 			if (swap && !invincible) {
@@ -154,15 +155,11 @@ package io.arkeus.antichromatic.game.entity {
 				Registry.swaps++;
 			}
 			
-			if (Ax.keys.pressed(AxKey.E)) {
-				//y += 48;
-			}
-			
 			if (wallJumping <= 0) {
-				if (left) {
+				if (left && !Input.held(Input.ALT_SHOOT)) {
 					velocity.x = -SPEED;
 					inputSinceClutch = true;
-				} else if (right) {
+				} else if (right && !Input.held(Input.ALT_SHOOT)) {
 					velocity.x = SPEED;
 					inputSinceClutch = true;
 				} else {
@@ -218,7 +215,7 @@ package io.arkeus.antichromatic.game.entity {
 				inputSinceClutch = true;
 			}
 			
-			if (Ax.keys.pressed(AxKey.R)) {
+			if (Input.pressed(Input.BACK)) {
 				harm();
 			}
 		}
@@ -243,42 +240,15 @@ package io.arkeus.antichromatic.game.entity {
 		private function handleShooting():void {
 			gunRecharge -= Ax.dt;
 			
-			var m:Boolean, l:Boolean, r:Boolean, u:Boolean, d:Boolean;
-			
-			switch (Registry.controls) {
-				case Controls.WASD1:
-					m = Ax.mouse.held(AxMouseButton.LEFT);
-					l = Ax.keys.held(AxKey.LEFT);
-					r = Ax.keys.held(AxKey.RIGHT);
-					u = Ax.keys.held(AxKey.UP);
-					d = Ax.keys.held(AxKey.DOWN);
-					break;
-				case Controls.WASD2:
-					m = Ax.mouse.held(AxMouseButton.LEFT);
-					l = Ax.keys.held(AxKey.LEFT);
-					r = Ax.keys.held(AxKey.RIGHT);
-					u = Ax.keys.held(AxKey.UP);
-					d = Ax.keys.held(AxKey.DOWN);
-					break;
-				case Controls.ARROWS1:
-					m = Ax.mouse.held(AxMouseButton.LEFT);
-					l = Ax.keys.held(AxKey.A) || Ax.keys.held(AxKey.Q);
-					r = Ax.keys.held(AxKey.D);
-					u = Ax.keys.held(AxKey.W) || Ax.keys.held(AxKey.Z);
-					d = Ax.keys.held(AxKey.S);
-					break;
-				case Controls.ARROWS2:
-					m = Ax.mouse.held(AxMouseButton.LEFT);
-					l = Ax.keys.held(AxKey.A) || Ax.keys.held(AxKey.Q);
-					r = Ax.keys.held(AxKey.D);
-					u = Ax.keys.held(AxKey.W) || Ax.keys.held(AxKey.Z);
-					d = Ax.keys.held(AxKey.S);
-					break;
+			var shootStick:JoystickControl = Input.shootStick();
+			var moveStick:JoystickControl = Input.moveStick();
+			if (shootStick == null || moveStick == null) {
+				return;
 			}
+			var shootButton:Boolean = Input.held(Input.SHOOT) || Input.held(Input.ALT_SHOOT);
+			var shooting:Boolean = shootStick.distance > 0.3 || shootButton;
 			
-			var s:Boolean = m || l || r || u || d;
-			
-			if (!s) {
+			if (!shooting) {
 				if (velocity.x < 0) {
 					pointGunAtRadians(Math.PI);
 				} else if (velocity.x > 0) {
@@ -290,25 +260,25 @@ package io.arkeus.antichromatic.game.entity {
 				return;
 			}
 			
-			if (s) {
+			if (shooting) {
 				var bullet:Bullet = Registry.game.bullets.recycle() as Bullet;
 				if (bullet == null) {
 					Registry.game.bullets.add(bullet = new Bullet);
 				}
 				
 				var direction:Number;
-				if (m) {
-					direction = aim;
+				if (!shootButton) {
+					direction = shootStick.angle;
 					pointGunAtRadians(direction);
-				} else if (l || r || u || d) {
-					if (r) {
-						direction = u ? Math.PI / 4 : d ? Math.PI / 4 * 7 : 0;
-					} else if (l) {
-						direction = u ? Math.PI / 4 * 3 : d ? Math.PI / 4 * 5 : Math.PI;
-					} else if (u) {
-						direction = Math.PI / 2;
-					} else if (d) {
-						direction = Math.PI / 2 * 3;
+				} else {
+					if (moveStick.distance > 0.3) {
+						direction = moveStick.angle;
+					} else if (facing == RIGHT || Input.held(Input.RIGHT)) {
+						direction = 0;
+						facing = RIGHT;
+					} else if (facing == LEFT || Input.held(Input.LEFT)) {
+						direction = Math.PI;
+						facing = LEFT;
 					}
 					pointGunAtRadians(direction);
 				}
@@ -368,7 +338,7 @@ package io.arkeus.antichromatic.game.entity {
 		
 		private function toggleColor(flash:Boolean = true, force:int = -1):void {
 			hue = force > -1 ? force : (hue == WHITE ? BLACK : WHITE);
-			load(hue == BLACK ? Resource.PLAYER_BLACK : Resource.PLAYER_WHITE, FRAME_WIDTH, FRAME_HEIGHT);
+			load(hue == BLACK ? Resource.PLAYER_BLACK : Resource.PLAYER_WHITE, FRAME_WIDTH, FRAME_HEIGHT, true);
 			gun.changeColor(hue);
 			Registry.game.world.setGraphic(hue == WHITE ? Resource.TILES_WHITE : Resource.TILES_BLACK);
 			if (flash) {
@@ -377,9 +347,16 @@ package io.arkeus.antichromatic.game.entity {
 			Registry.game.world.adjustFromColor(hue);
 			resize();
 			justSwapped = true;
+//			Registry.game.lasersW.dirty = true;
+//			Registry.game.lasersB.dirty = true;
 			
 			if (hue == WHITE) {
 				clutching = 0;
+				Registry.game.spikesW.alpha = 1;
+				Registry.game.spikesB.alpha = 0.2;
+			} else {
+				Registry.game.spikesW.alpha = 0.2;
+				Registry.game.spikesB.alpha = 1;
 			}
 		}
 		

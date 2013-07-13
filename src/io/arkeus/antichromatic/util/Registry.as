@@ -101,6 +101,18 @@ package io.arkeus.antichromatic.util {
 			music.volume = Ax.musicMuted ? 0 : 0.7;
 		}
 		
+		public static function replayMusic():void {
+			if (musicClass == null || !Config.SOUND_ENABLED) {
+				return;
+			}
+			if (music != null && music.exists) {
+				music.destroy();
+				music.dispose();
+			}
+			music = Ax.music(musicClass, 0.7);
+			music.volume = Ax.musicMuted ? 0 : 0.7;
+		}
+		
 		public static function save():void {
 			saveHandler.save();
 		}

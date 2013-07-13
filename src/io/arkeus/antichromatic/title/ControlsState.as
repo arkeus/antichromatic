@@ -1,5 +1,7 @@
 package io.arkeus.antichromatic.title {
 	import io.arkeus.antichromatic.assets.Resource;
+	import io.arkeus.antichromatic.ouya.OuyaButton;
+	import io.arkeus.antichromatic.ouya.OuyaButtonGroup;
 	import io.arkeus.antichromatic.util.Analytics;
 	import io.arkeus.antichromatic.util.Controls;
 	import io.arkeus.antichromatic.util.Registry;
@@ -21,14 +23,17 @@ package io.arkeus.antichromatic.title {
 		private var controlsFrame:AxSprite;
 		private var controlsText:AxText;
 		
+		private var buttons:OuyaButtonGroup;
+		
 		override public function create():void {
 			noScroll();
 			
-			this.add(wasd1Button = new AxButton(67, 144, Resource.BUTTON, 107, 24).text("WASD", null, 7, 3).onClick(wasd1));
-			this.add(wasd2Button = new AxButton(186, 144, Resource.BUTTON, 107, 24).text("Alt WASD", null, 7, 3).onClick(wasd2));
-			this.add(arrows1Button = new AxButton(67, 180, Resource.BUTTON, 107, 24).text("Arrows", null, 7, 3).onClick(arrows1));
-			this.add(arrows2Button = new AxButton(186, 180, Resource.BUTTON, 107, 24).text("Alt Arrows", null, 7, 3).onClick(arrows2));
-			this.add(new AxButton(127, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
+			this.add(buttons = new OuyaButtonGroup);
+			buttons.add(wasd1Button = new OuyaButton(67, 144, Resource.BUTTON, 107, 24).text("WASD", null, 7, 3).onClick(wasd1));
+			buttons.add(wasd2Button = new OuyaButton(186, 144, Resource.BUTTON, 107, 24).text("Alt WASD", null, 7, 3).onClick(wasd2));
+			buttons.add(arrows1Button = new OuyaButton(67, 180, Resource.BUTTON, 107, 24).text("Arrows", null, 7, 3).onClick(arrows1));
+			buttons.add(arrows2Button = new OuyaButton(186, 180, Resource.BUTTON, 107, 24).text("Alt Arrows", null, 7, 3).onClick(arrows2));
+			buttons.add(new OuyaButton(127, 216, Resource.BUTTON, 107, 24).text("Back", null, 7, 3).onClick(back));
 			
 			this.add(controlsFrame = new AxSprite(68, 61));
 			controlsFrame.create(224, 48, 0xcc000000);
